@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentabilitäts- und Umschlagskennzahlen – Übung</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f5f2eb;--surface:#fff;--border:#d9d3c7;--ink:#1a1714;--ink-light:#6b6460;--accent:#c0392b;--accent-light:#fdf0ee;--green:#1a6b3c;--green-light:#eaf4ee;--gold:#b5860d;--gold-light:#fdf8ec;--blue:#1a3a6b;--blue-light:#eef2f9;--radius:10px;--shadow:0 2px 12px rgba(0,0,0,0.07);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:100px;}
+
+  header{background:var(--ink);color:#fff;padding:20px;display:flex;align-items:center;gap:14px;}
+  header a{color:#c9c0b8;text-decoration:none;font-size:0.82rem;border:1px solid #444;padding:5px 11px;border-radius:4px;white-space:nowrap;}
+  header a:hover{background:#333;color:#fff;}
+  header h1{font-family:'DM Serif Display',serif;font-size:1.45rem;font-weight:400;}
+  .subtitle{font-size:0.72rem;color:#999;margin-top:2px;letter-spacing:0.05em;text-transform:uppercase;}
+
+  .tabs{display:flex;padding:20px 20px 0;border-bottom:2px solid var(--border);background:var(--bg);}
+  .tab{padding:8px 16px;cursor:pointer;font-size:0.84rem;font-weight:500;color:var(--ink-light);border:2px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;background:transparent;transition:all 0.2s;margin-bottom:-2px;}
+  .tab:hover{color:var(--ink);background:#ece8e0;}
+  .tab.active{background:var(--surface);color:var(--ink);border-color:var(--border);border-bottom-color:var(--surface);font-weight:600;}
+  .badge{display:inline-block;font-size:0.65rem;padding:1px 6px;border-radius:20px;margin-left:5px;font-weight:600;vertical-align:middle;}
+  .tab:nth-child(1) .badge{background:var(--green-light);color:var(--green);}
+  .tab:nth-child(2) .badge{background:var(--gold-light);color:var(--gold);}
+  .tab:nth-child(3) .badge{background:var(--accent-light);color:var(--accent);}
+
+  .content{padding:22px 20px;max-width:860px;}
+  .level{display:none;}
+  .level.active{display:block;}
+
+  .fortschritt-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:20px;overflow:hidden;}
+  .fortschritt-fill{height:100%;background:linear-gradient(90deg,var(--green),#2ecc71);border-radius:2px;transition:width 0.4s ease;width:0%;}
+
+  .karte{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:var(--shadow);animation:einblenden 0.3s ease;}
+  @keyframes einblenden{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .aufgaben-nr{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-light);font-weight:600;margin-bottom:7px;}
+  .karte h3{font-family:'DM Serif Display',serif;font-size:1.08rem;font-weight:400;margin-bottom:9px;line-height:1.4;}
+  .karte p{font-size:0.88rem;color:var(--ink-light);line-height:1.6;margin-bottom:12px;}
+
+  .typ{display:inline-block;font-size:0.68rem;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:0.04em;margin-bottom:9px;}
+  .typ-berechnung{background:var(--blue-light);color:var(--blue);}
+  .typ-analyse{background:var(--gold-light);color:var(--gold);}
+  .typ-vergleich{background:#f0eaff;color:#5b2d9e;}
+  .typ-fallstudie{background:var(--accent-light);color:var(--accent);}
+
+  .btab{width:100%;border-collapse:collapse;font-size:0.84rem;font-family:'DM Mono',monospace;margin-bottom:14px;}
+  .btab th{background:var(--ink);color:#fff;padding:6px 10px;text-align:left;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.04em;font-weight:600;}
+  .btab td{padding:5px 10px;border-bottom:1px solid var(--border);}
+  .btab tr:last-child td{border-bottom:none;}
+  .btab tr:nth-child(even) td{background:#faf9f7;}
+  .btab td:last-child{text-align:right;font-weight:500;}
+  .btab .summe td{border-top:2px solid var(--border);font-weight:700;background:#f0ede6;}
+  .btab .gruppe td{font-weight:700;color:var(--ink-light);font-size:0.73rem;text-transform:uppercase;letter-spacing:0.05em;background:#f0ede6;padding-top:8px;}
+
+  .formel{background:var(--blue-light);border-left:3px solid var(--blue);border-radius:4px;padding:8px 12px;margin:11px 0;font-size:0.82rem;font-family:'DM Mono',monospace;color:var(--blue);line-height:1.6;}
+  .hinweis{background:#f0ede6;border-radius:6px;padding:9px 12px;font-size:0.8rem;color:var(--ink-light);margin-bottom:12px;}
+  .hinweis strong{color:var(--ink);}
+
+  /* Hilfe-Aufklapper */
+  .hilfe{margin:10px 0 12px;}
+  .hilfe summary{cursor:pointer;font-size:0.83rem;color:var(--blue);font-weight:600;padding:7px 11px;background:var(--blue-light);border-radius:6px;border:1px solid #c5d3e8;list-style:none;user-select:none;display:flex;align-items:center;gap:6px;transition:background 0.15s;}
+  .hilfe summary::-webkit-details-marker{display:none;}
+  .hilfe summary:hover{background:#dde7f3;}
+  .hilfe summary::before{content:"▶";font-size:0.7rem;transition:transform 0.2s;}
+  .hilfe[open] summary::before{transform:rotate(90deg);}
+  .hilfe-inhalt{padding:12px 14px;background:#fafafa;border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;font-size:0.85rem;line-height:1.55;color:var(--ink);}
+  .hilfe-inhalt p{margin-bottom:8px;color:var(--ink);}
+  .hilfe-inhalt p:last-child{margin-bottom:0;}
+  .hilfe-inhalt .schritt{font-family:'DM Mono',monospace;background:#fff;border:1px solid var(--border);padding:6px 10px;border-radius:4px;margin:4px 0;font-size:0.82rem;}
+  .hilfe-inhalt a{color:var(--blue);text-decoration:none;font-weight:600;}
+
+  .eingabe-gruppe{display:flex;flex-direction:column;gap:8px;}
+  .eingabe-zeile{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .eingabe-zeile label{font-size:0.85rem;font-weight:500;min-width:220px;flex-shrink:0;}
+  .eingabe-zeile input{width:110px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Mono',monospace;font-size:0.86rem;background:var(--bg);text-align:right;transition:border-color 0.2s;}
+  .eingabe-zeile input:focus{outline:none;border-color:var(--ink);background:#fff;}
+  .einheit{font-size:0.78rem;color:var(--ink-light);}
+
+  .btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .btn{padding:8px 16px;border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;transition:all 0.18s;}
+  .btn-p{background:var(--ink);color:#fff;}
+  .btn-p:hover{background:#333;transform:translateY(-1px);}
+  .btn-s{background:transparent;color:var(--ink-light);border:1.5px solid var(--border);}
+  .btn-s:hover{border-color:var(--ink);color:var(--ink);}
+  .btn-n{background:var(--green);color:#fff;display:none;}
+  .btn-n:hover{background:#145c32;}
+
+  .fb{margin-top:12px;padding:11px 14px;border-radius:8px;font-size:0.87rem;line-height:1.6;display:none;}
+  .fb.richtig{background:var(--green-light);border:1px solid #a8d5be;color:var(--green);display:block;}
+  .fb.falsch{background:var(--accent-light);border:1px solid #f0b8b2;color:var(--accent);display:block;}
+  .fb.loesung{background:var(--gold-light);border:1px solid #e8d08a;color:#7a5a08;display:block;}
+
+  .mc{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
+  .mc-opt{padding:9px 13px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.87rem;transition:all 0.18s;background:var(--bg);display:flex;align-items:center;gap:9px;}
+  .mc-opt:hover{border-color:var(--ink);background:#fff;}
+  .mc-opt.richtig{border-color:var(--green);background:var(--green-light);color:var(--green);pointer-events:none;}
+  .mc-opt.falsch{border-color:var(--accent);background:var(--accent-light);color:var(--accent);pointer-events:none;}
+  .mc-opt.gesperrt{pointer-events:none;}
+  .mc-bul{width:20px;height:20px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+
+  .ta{width:100%;min-height:85px;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.87rem;resize:vertical;background:var(--bg);margin-top:8px;transition:border-color 0.2s;}
+  .ta:focus{outline:none;border-color:var(--ink);background:#fff;}
+
+  .etab{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0;}
+  .etab th{background:#f0ede6;padding:6px 10px;text-align:left;font-size:0.76rem;font-weight:600;color:var(--ink-light);letter-spacing:0.04em;}
+  .etab td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .etab tr:last-child td{border-bottom:none;}
+  .etab input{width:90px;padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-family:'DM Mono',monospace;font-size:0.84rem;text-align:right;background:var(--bg);}
+  .etab input:focus{outline:none;border-color:var(--ink);background:#fff;}
+  .etab select{padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.81rem;background:var(--bg);cursor:pointer;}
+
+  .abschluss{text-align:center;padding:36px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .abschluss .score{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--green);line-height:1;margin-bottom:8px;}
+  .abschluss p{color:var(--ink-light);font-size:0.91rem;margin-bottom:20px;}
+
+  /* Taschenrechner */
+  #tr-toggle{position:fixed;bottom:18px;right:18px;z-index:200;background:var(--ink);color:#fff;border:none;border-radius:50px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;gap:7px;transition:transform 0.2s;}
+  #tr-toggle:hover{transform:scale(1.04);}
+  #taschenrechner{position:fixed;bottom:70px;right:18px;z-index:199;background:#1e1c1a;border-radius:18px;padding:16px;width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:none;animation:trEin 0.2s ease;}
+  @keyframes trEin{from{opacity:0;transform:translateY(12px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+  #tr-display{background:#111;border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:right;}
+  #tr-ausdruck{font-family:'DM Mono',monospace;font-size:0.72rem;color:#888;min-height:16px;word-break:break-all;}
+  #tr-ergebnis{font-family:'DM Mono',monospace;font-size:1.6rem;color:#fff;min-height:38px;word-break:break-all;}
+  .tr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+  .tr-btn{padding:14px 0;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.12s,transform 0.1s;-webkit-tap-highlight-color:transparent;}
+  .tr-btn:active{transform:scale(0.93);opacity:0.85;}
+  .tr-zahl{background:#3a3835;color:#fff;}
+  .tr-op{background:#c0392b;color:#fff;font-size:1.1rem;}
+  .tr-fn{background:#2c2a28;color:#ccc;font-size:0.85rem;}
+  .tr-gleich{background:#e67e22;color:#fff;font-size:1.1rem;}
+  .tr-null{grid-column:span 2;}
+  .tr-klammer{background:#2c4a2c;color:#7ecf7e;font-size:1rem;font-weight:700;}
+
+  @media(max-width:600px){header{padding:14px;}.tabs{padding:16px 14px 0;}.tab{padding:7px 11px;font-size:0.78rem;}.content{padding:16px 14px;}.karte{padding:16px;}.eingabe-zeile label{min-width:100%;} #taschenrechner{width:calc(100vw - 28px);right:14px;bottom:68px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Übersicht</a>
+  <div>
+    <h1>Rentabilitäts- & Umschlagskennzahlen</h1>
+    <div class="subtitle">Interaktive Übungen · 3 Schwierigkeitsstufen</div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="wechsleStufe(1)">Stufe 1 <span class="badge">Einstieg</span></div>
+  <div class="tab" onclick="wechsleStufe(2)">Stufe 2 <span class="badge">Analyse</span></div>
+  <div class="tab" onclick="wechsleStufe(3)">Stufe 3 <span class="badge">Profi</span></div>
+</div>
+
+<div class="content">
+
+<!-- ══════════════ STUFE 1 ══════════════ -->
+<div class="level active" id="level-1">
+  <div class="fortschritt-bar"><div class="fortschritt-fill" id="p1"></div></div>
+
+  <!-- A1: EK-Rentabilität -->
+  <div class="karte" id="l1a1">
+    <div class="aufgaben-nr">Aufgabe 1 von 5</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Eigenkapitalrentabilität – Bäckerei Haller GmbH</h3>
+    <p>Im abgelaufenen Geschäftsjahr erzielte die Bäckerei einen Gewinn von 36.000 €.</p>
+    <div class="hinweis"><strong>Eröffnungsbilanz:</strong> Eigenkapital 380.000 € &nbsp;|&nbsp; <strong>Schlussbilanz:</strong> Eigenkapital 416.000 €</div>
+    <div class="formel">EK-Rentabilität = (Gewinn · 100) / Ø Eigenkapital<br>Ø EK = (EK Jahresbeginn + EK Jahresende) / 2</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die EK-Rentabilität?</strong> Sie beantwortet die Frage: Wie viel Prozent Rendite hat das eingesetzte Eigenkapital erzielt? Das EK ist aus Sicht der Eigentümer eine Geldanlage – ähnlich wie ein Sparbuch oder eine Aktie.</p>
+        <p><strong>Warum Durchschnitt?</strong> Das EK verändert sich im Laufe des Jahres durch einbehaltene Gewinne. Daher nimmt man den Mittelwert aus Jahresbeginn und Jahresende.</p>
+        <div class="schritt">1. Ø EK = (380.000 + 416.000) / 2 = ?</div>
+        <div class="schritt">2. EK-Rentabilität = (36.000 · 100) / Ø EK = ?</div>
+        <p>Mehr dazu auf der <a href="erklaerung_rentabilitaet.html#ek-rentabilitaet">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>Ø Eigenkapital</label><input type="number" id="i1a1-ek" placeholder="0"><span class="einheit">€</span></div>
+      <div class="eingabe-zeile"><label>EK-Rentabilität</label><input type="number" id="i1a1-r" placeholder="0,00"><span class="einheit">%</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL1A1()">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a1','Ø EK = (380.000 + 416.000) / 2 = <strong>398.000 €</strong> | EK-Rentabilität = (36.000 · 100) / 398.000 = <strong>9,05 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a1" onclick="weiter('l1a1','l1a2','p1',20)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a1"></div>
+  </div>
+
+  <!-- A2: GK-Rentabilität -->
+  <div class="karte" id="l1a2" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 2 von 5</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Gesamtkapitalrentabilität – Autohaus Wagner GmbH</h3>
+    <p>Das Autohaus erzielte einen Jahresgewinn von 54.000 € und zahlte Fremdkapitalzinsen von 18.000 €.</p>
+    <div class="hinweis"><strong>Ø Gesamtkapital:</strong> (1.200.000 + 1.320.000) / 2 = 1.260.000 €</div>
+    <div class="formel">GK-Rentabilität = ((Gewinn + FK-Zinsen) · 100) / Ø Gesamtkapital</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Warum werden die Zinsen addiert?</strong> Das Fremdkapital kostet Zinsen. Um die Rentabilität des <em>gesamten</em> eingesetzten Kapitals zu messen, müssen diese Zinsen zum Gewinn hinzugerechnet werden. Sonst würde ein stark fremdfinanziertes Unternehmen schlechter dastehen, obwohl es genauso effizient wirtschaftet.</p>
+        <div class="schritt">GK-Rentabilität = ((54.000 + 18.000) · 100) / 1.260.000</div>
+        <p>Mehr dazu auf der <a href="erklaerung_rentabilitaet.html#gk-rentabilitaet">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>GK-Rentabilität</label><input type="number" id="i1a2" placeholder="0,00"><span class="einheit">%</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a2',5.71,'f1a2','n1a2','(54.000 + 18.000) · 100 / 1.260.000 = 72.000 · 100 / 1.260.000 = <strong>5,71 %</strong>')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a2','(54.000 + 18.000) · 100 / 1.260.000 = <strong>5,71 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a2" onclick="weiter('l1a2','l1a3','p1',40)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a2"></div>
+  </div>
+
+  <!-- A3: Umsatzrentabilität -->
+  <div class="karte" id="l1a3" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 3 von 5</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Umsatzrentabilität – Großhandel Kastner OHG</h3>
+    <p>Das GuV-Konto weist einen Gewinn von 85.000 € aus. Die Umsatzerlöse müssen zuerst ermittelt werden.</p>
+    <table class="btab">
+      <tr><th colspan="2">GuV-Konto (Haben-Seite)</th></tr>
+      <tr><td>Umsatzerlöse für Waren</td><td>1.580.000</td></tr>
+      <tr><td>Weitere Erlöse</td><td>70.000</td></tr>
+      <tr class="summe"><td>Summe Erträge</td><td>1.650.000</td></tr>
+    </table>
+    <div class="formel">Umsatzrentabilität = (Gewinn · 100) / Umsatzerlöse</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was sind Umsatzerlöse?</strong> Die Summe aller Erträge auf der Habenseite des GuV-Kontos – also alle Einnahmen des Unternehmens im Geschäftsjahr.</p>
+        <p><strong>Was zeigt die Umsatzrentabilität?</strong> Von jedem Euro Umsatz, den das Unternehmen macht, bleibt dieser Prozentsatz als Gewinn übrig. Im Handel sind die Werte oft niedrig (1–5 %), da die Margen gering sind.</p>
+        <div class="schritt">Umsatzerlöse = 1.580.000 + 70.000 = 1.650.000 €</div>
+        <div class="schritt">Umsatzrentabilität = (85.000 · 100) / 1.650.000</div>
+        <p>Mehr dazu auf der <a href="erklaerung_rentabilitaet.html#umsatzrentabilitaet">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>Umsatzrentabilität</label><input type="number" id="i1a3" placeholder="0,00"><span class="einheit">%</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a3',5.15,'f1a3','n1a3','(85.000 · 100) / 1.650.000 = <strong>5,15 %</strong> – von jedem Euro Umsatz bleiben rund 5 Cent als Gewinn.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a3','(85.000 · 100) / 1.650.000 = <strong>5,15 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a3" onclick="weiter('l1a3','l1a4','p1',60)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a3"></div>
+  </div>
+
+  <!-- A4: GK-Umschlag -->
+  <div class="karte" id="l1a4" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 4 von 5</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>GK-Umschlagshäufigkeit – Schreinerei Brandt GmbH</h3>
+    <p>Umsatzerlöse: 2.400.000 € · Ø Gesamtkapital: 800.000 €</p>
+    <div class="formel">GK-Umschlagshäufigkeit = Umsatzerlöse / Ø Gesamtkapital</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die GK-Umschlagshäufigkeit?</strong> Sie gibt an, wie oft das Gesamtkapital im Jahr durch Umsatz erwirtschaftet wurde. Ein Wert von 3 bedeutet: Mit jedem Euro Kapital wurden 3 Euro Umsatz erzielt.</p>
+        <p><strong>Achtung:</strong> Das Ergebnis ist eine <strong>reine Zahl</strong> – kein Prozentwert! Kein · 100 in der Formel.</p>
+        <div class="schritt">GK-Umschlag = 2.400.000 / 800.000 = ?</div>
+        <p>Mehr dazu auf der <a href="erklaerung_rentabilitaet.html#gk-umschlag">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>GK-Umschlagshäufigkeit</label><input type="number" id="i1a4" placeholder="0,00"><span class="einheit">(Zahl)</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a4',3,'f1a4','n1a4','2.400.000 / 800.000 = <strong>3,00</strong> – das Gesamtkapital erneuert sich dreimal pro Jahr durch Umsatz.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a4','2.400.000 / 800.000 = <strong>3,00</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a4" onclick="weiter('l1a4','l1a5','p1',80)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a4"></div>
+  </div>
+
+  <!-- A5: EK-Umschlag -->
+  <div class="karte" id="l1a5" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 5 von 5</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>EK-Umschlagshäufigkeit – Fitnessstudio Körner GmbH</h3>
+    <p>Umsatzerlöse: 960.000 € · Ø Eigenkapital: 320.000 €</p>
+    <div class="formel">EK-Umschlagshäufigkeit = Umsatzerlöse / Ø Eigenkapital</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die EK-Umschlagshäufigkeit?</strong> Wie viele Euro Umsatz wurden mit einem Euro Eigenkapital erzielt. Sie ist stets höher als die GK-Umschlagshäufigkeit, weil das EK kleiner als das GK ist.</p>
+        <div class="schritt">EK-Umschlag = 960.000 / 320.000 = ?</div>
+        <p>Mehr dazu auf der <a href="erklaerung_rentabilitaet.html#ek-umschlag">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>EK-Umschlagshäufigkeit</label><input type="number" id="i1a5" placeholder="0,00"><span class="einheit">(Zahl)</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a5',3,'f1a5','n1a5','960.000 / 320.000 = <strong>3,00</strong> – mit jedem Euro EK wurden 3 Euro Umsatz erwirtschaftet.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a5','960.000 / 320.000 = <strong>3,00</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a5" onclick="abschluss(1)">Ergebnis →</button>
+    </div>
+    <div class="fb" id="f1a5"></div>
+  </div>
+
+  <div class="abschluss" id="abs1" style="display:none">
+    <div class="score">5 / 5</div>
+    <p>Alle Kennzahlen beherrscht – weiter zu Stufe 2!</p>
+    <button class="btn btn-p" onclick="wechsleStufe(2)">Weiter zu Stufe 2 →</button>
+  </div>
+</div>
+
+<!-- ══════════════ STUFE 2 ══════════════ -->
+<div class="level" id="level-2">
+  <div class="fortschritt-bar"><div class="fortschritt-fill" id="p2"></div></div>
+
+  <!-- A1: Alle 5 ohne Formeln -->
+  <div class="karte" id="l2a1">
+    <div class="aufgaben-nr">Aufgabe 1 von 3</div>
+    <span class="typ typ-analyse">Berechnung ohne Formelangabe</span>
+    <h3>Alle fünf Kennzahlen – Reisebüro Lenz KG</h3>
+    <p>Berechne alle fünf Kennzahlen. Die Formeln sind nicht angegeben.</p>
+    <div class="zwei-spalten" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <table class="btab">
+        <tr><th colspan="2">Eröffnungsbilanz (T€)</th></tr>
+        <tr><td>Eigenkapital</td><td>420</td></tr>
+        <tr><td>Fremdkapital</td><td>280</td></tr>
+        <tr class="summe"><td>Gesamtkapital</td><td>700</td></tr>
+      </table>
+      <table class="btab">
+        <tr><th colspan="2">Schlussbilanz (T€)</th></tr>
+        <tr><td>Eigenkapital</td><td>460</td></tr>
+        <tr><td>Fremdkapital</td><td>340</td></tr>
+        <tr class="summe"><td>Gesamtkapital</td><td>800</td></tr>
+      </table>
+    </div>
+    <div class="hinweis"><strong>GuV:</strong> Gewinn 48.000 € · FK-Zinsen 14.000 € · Umsatzerlöse 1.800.000 €</div>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>EK-Rentabilität</label><input type="number" id="i2a1-ek" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>GK-Rentabilität</label><input type="number" id="i2a1-gk" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Umsatzrentabilität</label><input type="number" id="i2a1-ur" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>GK-Umschlagshäufigkeit</label><input type="number" id="i2a1-gu" placeholder="0,00"><span class="einheit">(Zahl)</span></div>
+      <div class="eingabe-zeile"><label>EK-Umschlagshäufigkeit</label><input type="number" id="i2a1-eu" placeholder="0,00"><span class="einheit">(Zahl)</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL2A1()">Alle prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f2a1','Ø EK=440 T€ · Ø GK=750 T€ | EK-R: 48/440·100=<strong>10,91 %</strong> · GK-R: 62/750·100=<strong>8,27 %</strong> · UR: 48/1800·100=<strong>2,67 %</strong> · GK-U: 1800/750=<strong>2,40</strong> · EK-U: 1800/440=<strong>4,09</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n2a1" onclick="weiter('l2a1','l2a2','p2',33)">Weiter →</button>
+    </div>
+    <div class="fb" id="f2a1"></div>
+  </div>
+
+  <!-- A2: Jahresvergleich -->
+  <div class="karte" id="l2a2" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 2 von 3</div>
+    <span class="typ typ-vergleich">Jahresvergleich</span>
+    <h3>Entwicklung beurteilen – Möbelhaus Steinberg GmbH</h3>
+    <p>Die folgenden Kennzahlen wurden für zwei aufeinanderfolgende Jahre ermittelt. Beurteile die Entwicklung.</p>
+    <table class="btab">
+      <tr><th>Kennzahl</th><th>Akt. Jahr</th><th>Vorjahr</th></tr>
+      <tr><td>EK-Rentabilität</td><td>6,2 %</td><td>11,4 %</td></tr>
+      <tr><td>GK-Rentabilität</td><td>5,8 %</td><td>9,1 %</td></tr>
+      <tr><td>Umsatzrentabilität</td><td>1,1 %</td><td>3,2 %</td></tr>
+      <tr><td>GK-Umschlagshäufigkeit</td><td>3,2</td><td>4,6</td></tr>
+      <tr><td>EK-Umschlagshäufigkeit</td><td>5,1</td><td>7,8</td></tr>
+    </table>
+    <p style="margin-bottom:4px">Welche <strong>zwei Kennzahlen</strong> haben sich am stärksten verschlechtert? Wähle aus:</p>
+    <div class="mc" id="mc-l2a2">
+      <div class="mc-opt" onclick="toggleMC2(this)"><div class="mc-bul">A</div>EK-Rentabilität (−5,2 Prozentpunkte)</div>
+      <div class="mc-opt" onclick="toggleMC2(this)"><div class="mc-bul">B</div>GK-Rentabilität (−3,3 Prozentpunkte)</div>
+      <div class="mc-opt" onclick="toggleMC2(this)"><div class="mc-bul">C</div>Umsatzrentabilität (−2,1 Prozentpunkte)</div>
+      <div class="mc-opt" onclick="toggleMC2(this)"><div class="mc-bul">D</div>EK-Umschlagshäufigkeit (−2,7)</div>
+    </div>
+    <p style="margin-top:12px;margin-bottom:2px">Begründe und erläutere, was diese Entwicklung für das Unternehmen bedeutet:</p>
+    <textarea class="ta" id="i2a2-text" placeholder="Deine Beurteilung..."></textarea>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL2A2()">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f2a2','Die stärksten Verschlechterungen: <strong>EK-Rentabilität</strong> (fast halbiert: −5,2 PP) und <strong>EK-Umschlagshäufigkeit</strong> (−2,7, d. h. mit jedem Euro EK werden deutlich weniger Umsatz erzielt). Bedeutung: Das eingesetzte EK arbeitet weniger effizient. Der Gewinn ist gesunken und/oder das EK gewachsen. Das Unternehmen erwirtschaftet mit seinem Kapital weniger Umsatz – mögliche Ursachen: sinkende Preise, Überkapazitäten, Wachstum ohne entsprechende Umsatzsteigerung.')">Lösung</button>
+      <button class="btn btn-n" id="n2a2" onclick="weiter('l2a2','l2a3','p2',66)">Weiter →</button>
+    </div>
+    <div class="fb" id="f2a2"></div>
+  </div>
+
+  <!-- A3: Rückwärtsrechnen -->
+  <div class="karte" id="l2a3" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 3 von 3</div>
+    <span class="typ typ-analyse">Rückwärtsrechnen</span>
+    <h3>Gesuchte Größe ermitteln</h3>
+    <p>Manchmal ist nicht das Ergebnis gesucht, sondern eine Eingangsgröße. Forme die Formel entsprechend um.</p>
+    <p>In einem Unternehmen beträgt die <strong>EK-Rentabilität 8 %</strong>. Das durchschnittliche Eigenkapital beträgt <strong>400.000 €</strong>. Wie hoch ist der <strong>Gewinn</strong>?</p>
+    <div class="formel">EK-Rentabilität = (Gewinn · 100) / Ø EK &nbsp;→&nbsp; Gewinn = EK-Rentabilität · Ø EK / 100</div>
+    <div class="mc" id="mc-l2a3">
+      <div class="mc-opt" onclick="pruefeL2A3(this,false)"><div class="mc-bul">A</div>Gewinn = 8 / 400.000 · 100 = 0,002 €</div>
+      <div class="mc-opt" onclick="pruefeL2A3(this,true)"><div class="mc-bul">B</div>Gewinn = 8 · 400.000 / 100 = 32.000 €</div>
+      <div class="mc-opt" onclick="pruefeL2A3(this,false)"><div class="mc-bul">C</div>Gewinn = 400.000 · 100 / 8 = 5.000.000 €</div>
+      <div class="mc-opt" onclick="pruefeL2A3(this,false)"><div class="mc-bul">D</div>Gewinn = 8 + 400.000 = 400.008 €</div>
+    </div>
+    <div class="fb" id="f2a3"></div>
+    <div class="btns">
+      <button class="btn btn-n" id="n2a3" onclick="abschluss(2)" style="display:none">Ergebnis →</button>
+    </div>
+  </div>
+
+  <div class="abschluss" id="abs2" style="display:none">
+    <div class="score">✓</div>
+    <p>Stufe 2 abgeschlossen – weiter zur Profi-Fallstudie!</p>
+    <button class="btn btn-p" onclick="wechsleStufe(3)">Weiter zu Stufe 3 →</button>
+  </div>
+</div>
+
+<!-- ══════════════ STUFE 3 ══════════════ -->
+<div class="level" id="level-3">
+  <div class="fortschritt-bar"><div class="fortschritt-fill" id="p3"></div></div>
+
+  <div class="karte" id="l3a1">
+    <div class="aufgaben-nr">Fallstudie</div>
+    <span class="typ typ-fallstudie">Vollständige Analyse</span>
+    <h3>Mediaworld e. K. – Rentabilitätsanalyse</h3>
+    <p>Berechne alle fünf Kennzahlen für die Mediaworld e. K. und beurteil abschließend, ob das Unternehmen profitabel arbeitet.</p>
+
+    <div class="zwei-spalten" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
+      <table class="btab">
+        <tr><th colspan="2">Eröffnungsbilanz 01.01.</th></tr>
+        <tr><td>Eigenkapital</td><td>694.000 €</td></tr>
+        <tr><td>Fremdkapital</td><td>221.000 €</td></tr>
+        <tr class="summe"><td>Gesamtkapital</td><td>915.000 €</td></tr>
+      </table>
+      <table class="btab">
+        <tr><th colspan="2">Schlussbilanz 31.12.</th></tr>
+        <tr><td>Eigenkapital</td><td>744.000 €</td></tr>
+        <tr><td>Fremdkapital</td><td>371.000 €</td></tr>
+        <tr class="summe"><td>Gesamtkapital</td><td>1.115.000 €</td></tr>
+      </table>
+    </div>
+
+    <table class="btab" style="margin-bottom:14px">
+      <tr><th colspan="2">GuV-Konto (Soll)</th><th colspan="2">GuV-Konto (Haben)</th></tr>
+      <tr><td>Aufwendungen f. Waren</td><td>2.396.100</td><td>Umsatzerlöse</td><td>4.695.500</td></tr>
+      <tr><td>Löhne</td><td>47.120</td><td>Weitere Erlöse</td><td>35.000</td></tr>
+      <tr><td>Gehälter</td><td>207.230</td><td></td><td></td></tr>
+      <tr><td>FK-Zinsen</td><td>19.000</td><td></td><td></td></tr>
+      <tr><td>Weitere Aufwendungen</td><td>1.972.050</td><td></td><td></td></tr>
+      <tr><td>EK (Gewinn)</td><td>89.000</td><td></td><td></td></tr>
+      <tr class="summe"><td>Summe</td><td>4.730.500</td><td>Summe</td><td>4.730.500</td></tr>
+    </table>
+
+    <p><strong>Schritt 1:</strong> Vorberechnungen</p>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>Ø Eigenkapital</label><input type="number" id="s3-oek" placeholder="0"><span class="einheit">€</span></div>
+      <div class="eingabe-zeile"><label>Ø Gesamtkapital</label><input type="number" id="s3-ogk" placeholder="0"><span class="einheit">€</span></div>
+      <div class="eingabe-zeile"><label>Umsatzerlöse gesamt</label><input type="number" id="s3-us" placeholder="0"><span class="einheit">€</span></div>
+    </div>
+
+    <p style="margin-top:16px"><strong>Schritt 2:</strong> Alle fünf Kennzahlen berechnen und beurteilen</p>
+    <table class="etab">
+      <tr><th>Kennzahl</th><th>Ergebnis</th><th>Beurteilung</th></tr>
+      <tr><td>EK-Rentabilität</td><td><input type="number" id="s3-ek"> %</td><td><select id="s3-ek-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>GK-Rentabilität</td><td><input type="number" id="s3-gk"> %</td><td><select id="s3-gk-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>Umsatzrentabilität</td><td><input type="number" id="s3-ur"> %</td><td><select id="s3-ur-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>GK-Umschlagshäufigkeit</td><td><input type="number" id="s3-gu"></td><td><select id="s3-gu-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>EK-Umschlagshäufigkeit</td><td><input type="number" id="s3-eu"></td><td><select id="s3-eu-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+    </table>
+
+    <p><strong>Schritt 3:</strong> Gesamtbeurteilung – Arbeitet die Mediaworld e. K. profitabel? (mindestens 3 Sätze)</p>
+    <textarea class="ta" id="s3-text" placeholder="Meine Beurteilung..."></textarea>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL3()">Alles prüfen</button>
+      <button class="btn btn-s" id="btn-muster" onclick="loesungL3()" disabled style="opacity:0.35;cursor:not-allowed;" title="Erst eigenes Ergebnis prüfen">Musterlösung</button>
+    </div>
+    <div class="fb" id="f3a1"></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- Taschenrechner -->
+<button id="tr-toggle" onclick="toggleTR()"><span>🧮</span> Rechner</button>
+<div id="taschenrechner">
+  <div id="tr-display">
+    <div id="tr-ausdruck"></div>
+    <div id="tr-ergebnis">0</div>
+  </div>
+  <div class="tr-grid">
+    <button class="tr-btn tr-fn" onclick="trFn('AC')">AC</button>
+    <button class="tr-btn tr-fn" onclick="trFn('DEL')">⌫</button>
+    <button class="tr-btn tr-klammer" onclick="trKlammer('(')">(</button>
+    <button class="tr-btn tr-klammer" onclick="trKlammer(')')">)</button>
+    <button class="tr-btn tr-op" onclick="trOp('/')">÷</button>
+    <button class="tr-btn tr-op" onclick="trOp('*')">×</button>
+    <button class="tr-btn tr-op" onclick="trOp('-')">−</button>
+    <button class="tr-btn tr-op" onclick="trOp('+')">+</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('7')">7</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('8')">8</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('9')">9</button>
+    <button class="tr-btn tr-gleich" onclick="trGleich()">=</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('4')">4</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('5')">5</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('6')">6</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('1')">1</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('2')">2</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('3')">3</button>
+    <button class="tr-btn tr-zahl tr-null" onclick="trZahl('0')">0</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('.')">.</button>
+    <button class="tr-btn tr-fn" onclick="trFn('+/-')">+/−</button>
+    <button class="tr-btn tr-fn" onclick="trFn('%')">%</button>
+  </div>
+</div>
+
+<script>
+const R=(v,n)=>Math.round(v*10**n)/10**n;
+const nah=(a,b,t=0.6)=>Math.abs(parseFloat(a)-b)<=t;
+
+function fb(id,typ,html){const e=document.getElementById(id);e.className='fb '+typ;e.innerHTML=html;}
+function loesung(id,html){fb(id,'loesung','📖 <strong>Musterlösung:</strong> '+html);}
+
+function weiter(aktId,nextId,progId,pct){
+  document.getElementById(aktId).style.display='none';
+  const n=document.getElementById(nextId);n.style.display='block';
+  n.scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById(progId).style.width=pct+'%';
+}
+function abschluss(stufe){
+  document.querySelectorAll('#level-'+stufe+' .karte').forEach(k=>k.style.display='none');
+  document.getElementById('abs'+stufe).style.display='block';
+  document.getElementById('p'+stufe).style.width='100%';
+}
+function wechsleStufe(nr){
+  document.querySelectorAll('.level').forEach(l=>l.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('level-'+nr).classList.add('active');
+  document.querySelectorAll('.tab')[nr-1].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pruefeZahl(inputId,korrekt,fbId,nextId,erklaerung){
+  const v=parseFloat(document.getElementById(inputId).value);
+  if(isNaN(v)){fb(fbId,'falsch','❌ Bitte einen Wert eingeben.');return;}
+  if(nah(v,korrekt)){
+    fb(fbId,'richtig','✅ <strong>Richtig!</strong> '+erklaerung);
+    document.getElementById(nextId).style.display='inline-block';
+  }else{
+    fb(fbId,'falsch',`❌ Dein Ergebnis: ${v.toFixed(2)} – überprüfe Zähler und Nenner.`);
+  }
+}
+
+// Stufe 1 / A1 (zwei Eingaben)
+function pruefeL1A1(){
+  const oek=parseFloat(document.getElementById('i1a1-ek').value);
+  const r=parseFloat(document.getElementById('i1a1-r').value);
+  const oekOk=nah(oek,398000,500);
+  const rOk=nah(r,9.05);
+  if(oekOk&&rOk){
+    fb('f1a1','richtig','✅ <strong>Richtig!</strong> Ø EK = <strong>398.000 €</strong> | EK-Rentabilität = <strong>9,05 %</strong> – das eingesetzte EK hat eine Rendite von gut 9 % erzielt.');
+    document.getElementById('n1a1').style.display='inline-block';
+  }else{
+    let msg='❌ ';
+    if(!oekOk) msg+='Ø EK: (380.000 + 416.000) / 2 = ? ';
+    if(!rOk) msg+='Rentabilität: (Gewinn · 100) / Ø EK = ?';
+    fb('f1a1','falsch',msg);
+  }
+}
+
+// Stufe 2 / A1
+function pruefeL2A1(){
+  const oek=440,ogk=750,us=1800;
+  const soll={ek:R(48/440*100,2),gk:R(62/750*100,2),ur:R(48/1800*100,2),gu:R(1800/750,2),eu:R(1800/440,2)};
+  const ids={ek:'i2a1-ek',gk:'i2a1-gk',ur:'i2a1-ur',gu:'i2a1-gu',eu:'i2a1-eu'};
+  const namen={ek:'EK-Rentabilität',gk:'GK-Rentabilität',ur:'Umsatzrentabilität',gu:'GK-Umschlag',eu:'EK-Umschlag'};
+  let richtig=0,fehler=[];
+  for(const k in soll){if(nah(parseFloat(document.getElementById(ids[k]).value),soll[k])) richtig++;else fehler.push(namen[k]);}
+  if(richtig===5){
+    fb('f2a1','richtig','✅ <strong>Alle fünf Kennzahlen korrekt!</strong> Das Reisebüro hat eine solide EK-Rendite (10,91 %) aber eine niedrige Umsatzrentabilität (2,67 %) – typisch für die Dienstleistungsbranche mit geringen Margen.');
+    document.getElementById('n2a1').style.display='inline-block';
+  }else{
+    fb('f2a1','falsch',`❌ <strong>${richtig}/5 korrekt.</strong> Fehler bei: ${fehler.join(', ')}`);
+  }
+}
+
+// Stufe 2 / A2
+function toggleMC2(el){el.classList.toggle('richtig');}
+function pruefeL2A2(){
+  const ausgewaehlt=Array.from(document.querySelectorAll('#mc-l2a2 .mc-opt.richtig'));
+  const text=document.getElementById('i2a2-text').value.trim();
+  // Richtig: A (EK-Rent) und D (EK-Umschlag) – stärkste rel. Verschlechterung
+  const werte=ausgewaehlt.map(e=>e.querySelector('.mc-bul').textContent);
+  const hatA=werte.includes('A'),hatD=werte.includes('D');
+  if(hatA&&hatD&&ausgewaehlt.length===2&&text.length>=30){
+    fb('f2a2','richtig','✅ <strong>Richtig!</strong> EK-Rentabilität (fast halbiert) und EK-Umschlagshäufigkeit (−2,7) sind die stärksten Verschlechterungen. Das Unternehmen erwirtschaftet mit dem EK deutlich weniger Gewinn und Umsatz als im Vorjahr.');
+    document.getElementById('n2a2').style.display='inline-block';
+  }else if(text.length<30){
+    fb('f2a2','falsch','❌ Bitte ausführlichere Begründung.');
+  }else if(ausgewaehlt.length!==2){
+    fb('f2a2','falsch','❌ Wähle genau zwei Kennzahlen aus.');
+  }else{
+    fb('f2a2','falsch','❌ Schau auf die absoluten Veränderungen: Welche Kennzahl hat sich prozentual/absolut am stärksten verändert?');
+  }
+}
+
+// Stufe 2 / A3
+function pruefeL2A3(el,richtig){
+  document.querySelectorAll('#mc-l2a3 .mc-opt').forEach(o=>o.classList.add('gesperrt'));
+  if(richtig){
+    el.classList.add('richtig');
+    fb('f2a3','richtig','✅ <strong>Richtig!</strong> Gewinn = EK-Rentabilität · Ø EK / 100 = 8 · 400.000 / 100 = <strong>32.000 €</strong>. Die Formel wird nach der gesuchten Größe umgestellt.');
+    document.getElementById('n2a3').style.display='inline-block';
+  }else{
+    el.classList.add('falsch');
+    fb('f2a3','falsch','❌ Stelle die Formel um: Gewinn = EK-Rentabilität · Ø EK / 100');
+  }
+}
+
+// Stufe 3
+const L3={
+  oek:R((694000+744000)/2,0), ogk:R((915000+1115000)/2,0), us:4730500,
+  ek:R(89000/((694000+744000)/2)*100,2),
+  gk:R((89000+19000)/((915000+1115000)/2)*100,2),
+  ur:R(89000/4730500*100,2),
+  gu:R(4730500/((915000+1115000)/2),2),
+  eu:R(4730500/((694000+744000)/2),2)
+};
+
+function pruefeL3(){
+  const oekOk=nah(parseFloat(document.getElementById('s3-oek').value),L3.oek,500);
+  const ogkOk=nah(parseFloat(document.getElementById('s3-ogk').value),L3.ogk,500);
+  const usOk=nah(parseFloat(document.getElementById('s3-us').value),L3.us,500);
+
+  const kz=[['s3-ek',L3.ek,'EK-Rentabilität'],['s3-gk',L3.gk,'GK-Rentabilität'],['s3-ur',L3.ur,'Umsatzrentabilität'],['s3-gu',L3.gu,'GK-Umschlag'],['s3-eu',L3.eu,'EK-Umschlag']];
+  let kzR=0,fehler=[];
+  kz.forEach(([id,soll,name])=>{
+    const v=parseFloat(document.getElementById(id).value);
+    if(nah(v,soll)){kzR++;document.getElementById(id).style.borderColor='var(--green)';}
+    else{fehler.push(`${name} (erwartet ${soll})`);document.getElementById(id).style.borderColor='var(--accent)';}
+  });
+
+  const text=document.getElementById('s3-text').value.trim();
+  let msg='';
+  if(!oekOk||!ogkOk||!usOk) msg+='⚠️ Vorberechnungen prüfen (Ø EK=719.000, Ø GK=1.015.000, Umsatz=4.730.500)<br>';
+  msg+=`<strong>${kzR}/5 Kennzahlen korrekt.</strong>`;
+  if(fehler.length) msg+='<br>Überprüfe: '+fehler.join(', ');
+  if(text.length<60) msg+='<br>⚠️ Beurteilung zu kurz – bitte ausführlicher begründen.';
+
+  if(oekOk&&ogkOk&&usOk&&kzR===5&&text.length>=60){
+    fb('f3a1','richtig','✅ <strong>Vollständige Analyse!</strong> '+msg);
+    document.getElementById('p3').style.width='100%';
+  }else{
+    fb('f3a1',kzR>=3?'loesung':'falsch',msg);
+    document.getElementById('p3').style.width=(kzR/5*80)+'%';
+  }
+  const btn=document.getElementById('btn-muster');
+  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';btn.title='';
+}
+
+function loesungL3(){
+  fb('f3a1','loesung',`<strong>Musterlösung Mediaworld e. K.</strong><br><br>
+    Ø EK = ${L3.oek.toLocaleString('de')} € · Ø GK = ${L3.ogk.toLocaleString('de')} € · Umsatz = 4.730.500 €<br><br>
+    <table style="width:100%;font-size:0.83rem;border-collapse:collapse">
+      <tr style="font-weight:700;border-bottom:1px solid #e8d08a"><td>Kennzahl</td><td>Ergebnis</td><td>Beurteilung</td></tr>
+      <tr><td>EK-Rentabilität</td><td>${L3.ek} %</td><td>🟢 gut – über Tagesgeldniveau</td></tr>
+      <tr><td>GK-Rentabilität</td><td>${L3.gk} %</td><td>🟢 gut – FK-Zinsen (2,09 %) liegen darunter</td></tr>
+      <tr><td>Umsatzrentabilität</td><td>${L3.ur} %</td><td>🟡 niedrig aber branchentypisch (Handel)</td></tr>
+      <tr><td>GK-Umschlagshäufigkeit</td><td>${L3.gu}</td><td>🟢 gut – hohes Umsatzvolumen</td></tr>
+      <tr><td>EK-Umschlagshäufigkeit</td><td>${L3.eu}</td><td>🟢 gut</td></tr>
+    </table><br>
+    <strong>Beurteilung:</strong> Die Mediaworld e. K. wirtschaftet profitabel. Die EK-Rentabilität von ${L3.ek} % liegt deutlich über der Rendite sicherer Geldanlagen. Die GK-Rentabilität (${L3.gk} %) übersteigt die Fremdkapitalzinsen (ca. 2 %), was bedeutet: jeder zusätzlich aufgenommene Euro FK bringt mehr ein als er kostet. Die niedrige Umsatzrentabilität (${L3.ur} %) ist im Großhandel branchentypisch und wird durch das hohe Umsatzvolumen kompensiert.`);
+}
+
+// Taschenrechner
+let trAusdruck='',trNeu=true,trLetzteOp=false;
+const trDisp=()=>document.getElementById('tr-ergebnis');
+const trExpr=()=>document.getElementById('tr-ausdruck');
+function toggleTR(){const tr=document.getElementById('taschenrechner');const o=tr.style.display==='block';tr.style.display=o?'none':'block';document.getElementById('tr-toggle').innerHTML=o?'<span>🧮</span> Rechner':'<span>✕</span> Schließen';}
+function trZahl(z){if(z==='.'&&trDisp().textContent.includes('.'))return;if(trNeu||trDisp().textContent==='0'){trDisp().textContent=z==='.'?'0.':z;trNeu=false;}else{if(trDisp().textContent.replace('-','').length>=12)return;trDisp().textContent+=z;}trLetzteOp=false;}
+function trOp(op){if(trLetzteOp){trAusdruck=trAusdruck.slice(0,-1)+op;trExpr().textContent=trAusdruck;return;}trAusdruck+=trDisp().textContent+op;trExpr().textContent=trAusdruck;trNeu=true;trLetzteOp=true;}
+function trGleich(){if(!trAusdruck)return;try{const a=trAusdruck+trDisp().textContent;const e=Function('"use strict";return('+a+')')();trExpr().textContent=a+' =';trDisp().textContent=String(Math.round(e*100000)/100000);trAusdruck='';trNeu=true;trLetzteOp=false;}catch{trDisp().textContent='Fehler';trAusdruck='';trNeu=true;}}
+function trFn(fn){const a=parseFloat(trDisp().textContent);if(fn==='AC'){trDisp().textContent='0';trAusdruck='';trExpr().textContent='';trNeu=true;trLetzteOp=false;}else if(fn==='+/-'){trDisp().textContent=String(-a);trNeu=false;}else if(fn==='%'){trDisp().textContent=String(a/100);trNeu=false;}else if(fn==='DEL'){const c=trDisp().textContent;trDisp().textContent=c.length>1?c.slice(0,-1):'0';}}
+function trKlammer(k){if(k==='('){trAusdruck+=trNeu?'(':trDisp().textContent+'*(';trExpr().textContent=trAusdruck;trNeu=true;trLetzteOp=false;}else{trAusdruck+=trDisp().textContent+')';trExpr().textContent=trAusdruck;trNeu=true;trLetzteOp=false;}}
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umschlagskennzahlen – Erklärung</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f5f2eb;--surface:#fff;--border:#d9d3c7;--ink:#1a1714;--ink-light:#6b6460;--accent:#c0392b;--green:#1a6b3c;--green-light:#eaf4ee;--gold:#b5860d;--gold-light:#fdf8ec;--blue:#1a3a6b;--blue-light:#eef2f9;--purple:#5b2d9e;--purple-light:#f0eaff;--radius:10px;--shadow:0 2px 12px rgba(0,0,0,0.07);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;padding-bottom:60px;}
+  header{background:var(--ink);color:#fff;padding:20px;display:flex;align-items:center;gap:14px;}
+  header a{color:#c9c0b8;text-decoration:none;font-size:0.82rem;border:1px solid #444;padding:5px 11px;border-radius:4px;white-space:nowrap;}
+  header a:hover{background:#333;color:#fff;}
+  header h1{font-family:'DM Serif Display',serif;font-size:1.45rem;font-weight:400;}
+  .subtitle{font-size:0.72rem;color:#999;margin-top:2px;letter-spacing:0.05em;text-transform:uppercase;}
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin:22px 20px;box-shadow:var(--shadow);max-width:820px;}
+  .toc h2{font-family:'DM Serif Display',serif;font-size:1rem;font-weight:400;margin-bottom:10px;color:var(--ink-light);}
+  .toc-liste{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;list-style:none;}
+  .toc-liste a{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:0.88rem;transition:background 0.15s;}
+  .toc-liste a:hover{background:var(--bg);}
+  .toc-num{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--ink-light);background:var(--bg);padding:2px 7px;border-radius:12px;}
+  .content{padding:0 20px;max-width:820px;}
+  section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:22px;box-shadow:var(--shadow);scroll-margin-top:20px;}
+  section h2{font-family:'DM Serif Display',serif;font-size:1.5rem;font-weight:400;margin-bottom:6px;}
+  section .lead{font-size:0.86rem;color:var(--ink-light);margin-bottom:18px;font-style:italic;}
+  section h3{font-size:1rem;font-weight:600;margin:18px 0 8px;}
+  section p{margin-bottom:12px;font-size:0.93rem;}
+  .formel-block{background:var(--blue-light);border-left:4px solid var(--blue);border-radius:6px;padding:14px 18px;margin:14px 0;font-family:'DM Mono',monospace;font-size:0.88rem;color:var(--blue);line-height:1.7;}
+  .btab{width:100%;border-collapse:collapse;font-size:0.84rem;font-family:'DM Mono',monospace;margin:12px 0;}
+  .btab th{background:var(--ink);color:#fff;padding:7px 10px;text-align:left;font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;}
+  .btab td{padding:6px 10px;border-bottom:1px solid var(--border);}
+  .btab tr:last-child td{border-bottom:none;}
+  .btab tr:nth-child(even) td{background:#faf9f7;}
+  .btab td:last-child{text-align:right;font-weight:500;}
+  .btab .summe td{border-top:2px solid var(--border);font-weight:700;background:#f0ede6;}
+  .beispiel{background:var(--gold-light);border-left:4px solid var(--gold);border-radius:6px;padding:14px 18px;margin:14px 0;}
+  .beispiel-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);font-weight:700;margin-bottom:8px;}
+  .beispiel .schritt{font-family:'DM Mono',monospace;font-size:0.88rem;color:#7a5a08;margin:4px 0;}
+  .merksatz{background:var(--green-light);border-left:4px solid var(--green);border-radius:6px;padding:14px 18px;margin:14px 0;font-size:0.91rem;}
+  .merksatz-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);font-weight:700;margin-bottom:6px;}
+  .achtung{background:#fdf0ee;border-left:4px solid var(--accent);border-radius:6px;padding:14px 18px;margin:14px 0;font-size:0.91rem;}
+  .achtung-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:700;margin-bottom:6px;}
+  .uebersicht-box{background:var(--purple-light);border-left:4px solid var(--purple);border-radius:6px;padding:14px 18px;margin:14px 0;}
+  .uebersicht-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);font-weight:700;margin-bottom:8px;}
+  .cta{text-align:center;padding:30px 24px;background:var(--ink);color:#fff;border-radius:var(--radius);margin:30px 0;}
+  .cta h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:8px;color:#fff;}
+  .cta p{color:#c9c0b8;margin-bottom:16px;font-size:0.92rem;}
+  .cta a{display:inline-block;background:var(--gold);color:var(--ink);padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.92rem;transition:transform 0.18s;}
+  .cta a:hover{transform:translateY(-1px);}
+  @media(max-width:600px){header{padding:14px;}.toc,.content{padding-left:14px;padding-right:14px;}section{padding:18px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Übersicht</a>
+  <div>
+    <h1>Umschlagskennzahlen</h1>
+    <div class="subtitle">Erklärung · Formeln · Beispiele</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Inhalt</h2>
+  <ul class="toc-liste">
+    <li><a href="#was-sind"><span class="toc-num">0</span>Was sind Umschlagskennzahlen?</a></li>
+    <li><a href="#gk-umschlag"><span class="toc-num">1</span>GK-Umschlagshäufigkeit</a></li>
+    <li><a href="#ek-umschlag"><span class="toc-num">2</span>EK-Umschlagshäufigkeit</a></li>
+    <li><a href="#vergleich"><span class="toc-num">3</span>Vergleich & Zusammenfassung</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+<section id="was-sind">
+  <h2>Was sind Umschlagskennzahlen?</h2>
+  <p class="lead">Wie oft erneuert sich eine Kapitalposition durch den Umsatz?</p>
+  <p>Die Rentabilitätskennzahlen messen, wie viel Gewinn ein Unternehmen im Verhältnis zum eingesetzten Kapital erzielt. Die <strong>Umschlagskennzahlen</strong> ergänzen dies: Sie zeigen, wie effizient das eingesetzte Kapital in Umsatz umgewandelt wird.</p>
+  <p>Ein Unternehmen kann auch bei niedriger Gewinnmarge erfolgreich sein, wenn es sehr hohe Umsätze mit wenig Kapital erzielt – das zeigen erst die Umschlagskennzahlen.</p>
+  <p>Das Buch behandelt zwei Umschlagskennzahlen, beide mit den gleichen Ausgangsdaten wie die Rentabilitätskennzahlen:</p>
+  <div class="hinweis" style="background:#f0ede6;border-radius:6px;padding:9px 12px;font-size:0.82rem;color:var(--ink-light);margin:12px 0;">
+    <strong>Datengrundlage Mediaworld e. K.:</strong> Ø GK = 1.015.000 € · Ø EK = 719.000 € · Umsatzerlöse = 4.730.500 €
+  </div>
+</section>
+
+<section id="gk-umschlag">
+  <h2>1. Gesamtkapitalumschlagshäufigkeit</h2>
+  <p class="lead">Wie oft wurde das Gesamtkapital durch Umsatz erwirtschaftet?</p>
+  <p>Diese Kennzahl gibt an, wie viele Euro Umsatz mit einem Euro Gesamtkapital erzielt wurden. Je höher der Wert, desto effizienter setzt das Unternehmen sein Kapital ein.</p>
+  <div class="formel-block">GK-Umschlagshäufigkeit = Umsatzerlöse / durchschnittliches Gesamtkapital</div>
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">GK-Umschlagshäufigkeit = 4.730.500 / 1.015.000 = <strong>4,66</strong></div>
+  </div>
+  <p>Das Gesamtkapital hat sich im Jahr <strong>4,66-mal</strong> durch Umsatz erneuert. Mit jedem Euro Gesamtkapital wurden 4,66 Euro Umsatz erzielt.</p>
+  <div class="merksatz">
+    <div class="merksatz-titel">Achtung: Kein Prozentwert!</div>
+    Das Ergebnis ist eine <strong>reine Zahl</strong> (Häufigkeit) – es wird <strong>nicht</strong> mit 100 multipliziert. Ein Wert von 4,66 bedeutet: 4,66-mal pro Jahr.
+  </div>
+</section>
+
+<section id="ek-umschlag">
+  <h2>2. Eigenkapitalumschlagshäufigkeit</h2>
+  <p class="lead">Wie oft wurde das Eigenkapital durch Umsatz erwirtschaftet?</p>
+  <p>Ähnlich wie die GK-Umschlagshäufigkeit, aber bezogen allein auf das Eigenkapital. Da das EK kleiner als das GK ist, fällt dieser Wert stets höher aus.</p>
+  <div class="formel-block">EK-Umschlagshäufigkeit = Umsatzerlöse / durchschnittliches Eigenkapital</div>
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">EK-Umschlagshäufigkeit = 4.730.500 / 719.000 = <strong>6,58</strong></div>
+  </div>
+  <p>Mit jedem Euro Eigenkapital wurden 6,58 Euro Umsatz erzielt. Das EK arbeitet intensiver als das GK – weil es kleiner ist, muss es mehr „leisten".</p>
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Eine hohe Umschlagshäufigkeit ist ein Zeichen für effizientes Wirtschaften. Im Handel sind die Werte wegen des hohen Umsatzvolumens typischerweise höher als in der Industrie.
+  </div>
+</section>
+
+<section id="vergleich">
+  <h2>3. Vergleich & Zusammenfassung</h2>
+  <p class="lead">Umschlags- und Rentabilitätskennzahlen zusammen lesen.</p>
+  <div class="uebersicht-box">
+    <div class="uebersicht-titel">Alle 5 Kennzahlen der Mediaworld e. K. im Überblick</div>
+    <table class="btab" style="margin-top:6px">
+      <tr><th>Kennzahl</th><th>Formel</th><th>Ergebnis</th><th>Einheit</th></tr>
+      <tr><td>EK-Rentabilität</td><td>(Gewinn · 100) / Ø EK</td><td>12,38</td><td>%</td></tr>
+      <tr><td>GK-Rentabilität</td><td>(G + FK-Zinsen) · 100 / Ø GK</td><td>10,64</td><td>%</td></tr>
+      <tr><td>Umsatzrentabilität</td><td>(Gewinn · 100) / Umsatz</td><td>1,88</td><td>%</td></tr>
+      <tr><td>GK-Umschlagshäufigkeit</td><td>Umsatz / Ø GK</td><td>4,66</td><td>Zahl</td></tr>
+      <tr><td>EK-Umschlagshäufigkeit</td><td>Umsatz / Ø EK</td><td>6,58</td><td>Zahl</td></tr>
+    </table>
+  </div>
+  <div class="achtung">
+    <div class="achtung-titel">Zeitpunktbetrachtung beachten</div>
+    Alle Kennzahlen beziehen sich auf ein Geschäftsjahr. Ein einzelner Wert sagt wenig aus – aussagekräftig wird die Analyse erst im <strong>Zeitreihenvergleich</strong> (mehrere Jahre) oder im <strong>Branchenvergleich</strong> (ähnliche Unternehmen).
+  </div>
+</section>
+
+<div class="cta">
+  <h2>Bereit zum Üben?</h2>
+  <p>Drei Stufen mit eigenen Unternehmen, Jahresvergleich und vollständiger Fallstudie.</p>
+  <a href="uebung_umschlag.html">Zur Übung →</a>
+</div>
+
+</div>
+</body>
+</html>

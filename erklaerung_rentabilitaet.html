@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentabilitäts- und Umschlagskennzahlen – Erklärung</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f5f2eb;--surface:#fff;--border:#d9d3c7;--ink:#1a1714;--ink-light:#6b6460;
+    --accent:#c0392b;--green:#1a6b3c;--green-light:#eaf4ee;
+    --gold:#b5860d;--gold-light:#fdf8ec;--blue:#1a3a6b;--blue-light:#eef2f9;
+    --radius:10px;--shadow:0 2px 12px rgba(0,0,0,0.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;padding-bottom:60px;}
+
+  header{background:var(--ink);color:#fff;padding:20px;display:flex;align-items:center;gap:14px;}
+  header a{color:#c9c0b8;text-decoration:none;font-size:0.82rem;border:1px solid #444;padding:5px 11px;border-radius:4px;white-space:nowrap;}
+  header a:hover{background:#333;color:#fff;}
+  header h1{font-family:'DM Serif Display',serif;font-size:1.45rem;font-weight:400;}
+  .subtitle{font-size:0.72rem;color:#999;margin-top:2px;letter-spacing:0.05em;text-transform:uppercase;}
+
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin:22px 20px;box-shadow:var(--shadow);max-width:820px;}
+  .toc h2{font-family:'DM Serif Display',serif;font-size:1rem;font-weight:400;margin-bottom:10px;color:var(--ink-light);}
+  .toc-liste{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;list-style:none;}
+  .toc-liste a{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:0.88rem;transition:background 0.15s;}
+  .toc-liste a:hover{background:var(--bg);}
+  .toc-num{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--ink-light);background:var(--bg);padding:2px 7px;border-radius:12px;}
+
+  .content{padding:0 20px;max-width:820px;}
+
+  section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:22px;box-shadow:var(--shadow);scroll-margin-top:20px;}
+  section h2{font-family:'DM Serif Display',serif;font-size:1.5rem;font-weight:400;margin-bottom:6px;}
+  section .lead{font-size:0.86rem;color:var(--ink-light);margin-bottom:18px;font-style:italic;}
+  section h3{font-size:1rem;font-weight:600;margin:18px 0 8px;}
+  section p{margin-bottom:12px;font-size:0.93rem;}
+
+  .formel-block{background:var(--blue-light);border-left:4px solid var(--blue);border-radius:6px;padding:14px 18px;margin:14px 0;font-family:'DM Mono',monospace;font-size:0.88rem;color:var(--blue);line-height:1.7;}
+  .formel-block .formel-zeile{margin-bottom:4px;}
+
+  .btab{width:100%;border-collapse:collapse;font-size:0.84rem;font-family:'DM Mono',monospace;margin:12px 0;}
+  .btab th{background:var(--ink);color:#fff;padding:7px 10px;text-align:left;font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;}
+  .btab td{padding:6px 10px;border-bottom:1px solid var(--border);}
+  .btab tr:last-child td{border-bottom:none;}
+  .btab tr:nth-child(even) td{background:#faf9f7;}
+  .btab td:last-child{text-align:right;font-weight:500;}
+  .btab .summe td{border-top:2px solid var(--border);font-weight:700;background:#f0ede6;}
+  .btab .haben td:first-child{color:var(--ink-light);font-style:italic;}
+
+  .beispiel{background:var(--gold-light);border-left:4px solid var(--gold);border-radius:6px;padding:14px 18px;margin:14px 0;}
+  .beispiel-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);font-weight:700;margin-bottom:8px;}
+  .beispiel .schritt{font-family:'DM Mono',monospace;font-size:0.88rem;color:#7a5a08;margin:4px 0;}
+  .beispiel .schritt strong{color:var(--ink);}
+
+  .merksatz{background:var(--green-light);border-left:4px solid var(--green);border-radius:6px;padding:14px 18px;margin:14px 0;font-size:0.91rem;}
+  .merksatz-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);font-weight:700;margin-bottom:6px;}
+  .richtwert{display:inline-block;background:var(--bg);border:1px solid var(--border);padding:3px 10px;border-radius:16px;font-size:0.78rem;font-family:'DM Mono',monospace;color:var(--ink-light);margin-top:4px;}
+
+  .achtung{background:#fdf0ee;border-left:4px solid var(--accent);border-radius:6px;padding:14px 18px;margin:14px 0;font-size:0.91rem;}
+  .achtung-titel{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:700;margin-bottom:6px;}
+
+  .zwei-spalten{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0;}
+  @media(max-width:600px){.zwei-spalten{grid-template-columns:1fr;}}
+
+  .cta{text-align:center;padding:30px 24px;background:var(--ink);color:#fff;border-radius:var(--radius);margin:30px 0;}
+  .cta h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:8px;color:#fff;}
+  .cta p{color:#c9c0b8;margin-bottom:16px;font-size:0.92rem;}
+  .cta a{display:inline-block;background:var(--gold);color:var(--ink);padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.92rem;transition:transform 0.18s;}
+  .cta a:hover{transform:translateY(-1px);}
+
+  @media(max-width:600px){header{padding:14px;}.toc,.content{padding-left:14px;padding-right:14px;}section{padding:18px;}section h2{font-size:1.25rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Übersicht</a>
+  <div>
+    <h1>Rentabilitäts- und Umschlagskennzahlen</h1>
+    <div class="subtitle">Erklärung · Formeln · Beispiele</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Inhalt</h2>
+  <ul class="toc-liste">
+    <li><a href="#grundlage"><span class="toc-num">0</span>Grundlage: GuV + Bilanz</a></li>
+    <li><a href="#ek-rentabilitaet"><span class="toc-num">1</span>EK-Rentabilität</a></li>
+    <li><a href="#gk-rentabilitaet"><span class="toc-num">2</span>GK-Rentabilität</a></li>
+    <li><a href="#umsatzrentabilitaet"><span class="toc-num">3</span>Umsatzrentabilität</a></li>
+    <li><a href="#gk-umschlag"><span class="toc-num">4</span>GK-Umschlagshäufigkeit</a></li>
+    <li><a href="#ek-umschlag"><span class="toc-num">5</span>EK-Umschlagshäufigkeit</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+<!-- 0 Grundlage -->
+<section id="grundlage">
+  <h2>Grundlage: Bilanz und GuV-Konto</h2>
+  <p class="lead">Rentabilitätskennzahlen verbinden Daten aus zwei Quellen: der Bilanz und dem GuV-Konto.</p>
+
+  <p>Bei den Bilanzkennzahlen genügte die Strukturbilanz. Für die Rentabilitätskennzahlen brauchen wir zusätzlich das <strong>Gewinn- und Verlustkonto (GuV)</strong>, denn hier steht der Gewinn des Unternehmens.</p>
+
+  <p>Das Buch arbeitet durchgängig mit der <strong>Mediaworld e. K.</strong> als Beispiel. Hier die Ausgangsdaten für dieses Modul:</p>
+
+  <div class="zwei-spalten">
+    <div>
+      <h3>Eröffnungsbilanz 01.01.20..</h3>
+      <table class="btab">
+        <tr><th>Aktiva</th><th>(€)</th><th>Passiva</th><th>(€)</th></tr>
+        <tr><td>Anlagevermögen</td><td>669.000</td><td>Eigenkapital</td><td>694.000</td></tr>
+        <tr><td>Umlaufvermögen</td><td>246.000</td><td>Fremdkapital</td><td>221.000</td></tr>
+        <tr class="summe"><td>Summe</td><td>915.000</td><td>Summe</td><td>915.000</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Schlussbilanz 31.12.20..</h3>
+      <table class="btab">
+        <tr><th>Aktiva</th><th>(€)</th><th>Passiva</th><th>(€)</th></tr>
+        <tr><td>Anlagevermögen</td><td>684.000</td><td>Eigenkapital</td><td>744.000</td></tr>
+        <tr><td>Umlaufvermögen</td><td>431.000</td><td>Fremdkapital</td><td>371.000</td></tr>
+        <tr class="summe"><td>Summe</td><td>1.115.000</td><td>Summe</td><td>1.115.000</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>GuV-Konto (verkürzt) 31.12.20..</h3>
+  <table class="btab">
+    <tr><th>Soll (Aufwendungen)</th><th>(€)</th><th>Haben (Erträge)</th><th>(€)</th></tr>
+    <tr><td>Aufwendungen für Waren</td><td>2.396.100</td><td>Umsatzerlöse für Waren</td><td>4.695.500</td></tr>
+    <tr><td>Löhne</td><td>47.120</td><td>Weitere Erlöse</td><td>35.000</td></tr>
+    <tr><td>Gehälter</td><td>207.230</td><td></td><td></td></tr>
+    <tr><td>Fremdkapitalzinsen</td><td>19.000</td><td></td><td></td></tr>
+    <tr><td>Weitere Aufwendungen</td><td>1.972.050</td><td></td><td></td></tr>
+    <tr><td>Eigenkapital (Gewinn)</td><td>89.000</td><td></td><td></td></tr>
+    <tr class="summe"><td>Summe</td><td>4.730.500</td><td>Summe</td><td>4.730.500</td></tr>
+  </table>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Merke</div>
+    Der <strong>Gewinn</strong> steht auf der Sollseite des GuV-Kontos – er ist der Überschuss der Erträge über die Aufwendungen: 4.730.500 − (4.730.500 − 89.000) = <strong>89.000 €</strong>.<br>
+    Die <strong>Umsatzerlöse</strong> stehen auf der Habenseite: 4.695.500 + 35.000 = <strong>4.730.500 €</strong>.
+  </div>
+</section>
+
+<!-- 1 EK-Rentabilität -->
+<section id="ek-rentabilitaet">
+  <h2>1. Eigenkapitalrentabilität</h2>
+  <p class="lead">Wie viel Prozent Rendite bringt das eingesetzte Eigenkapital?</p>
+
+  <p>Das Eigenkapital ist aus Sicht der Eigentümer eine <strong>Geldanlage</strong> – wie ein Sparbuch oder eine Aktie. Deshalb ist es interessant zu wissen, ob sich diese Investition gelohnt hat. Die Eigenkapitalrentabilität zeigt, wie viel Prozent Gewinn das eingesetzte Eigenkapital erzielt hat.</p>
+
+  <div class="formel-block">
+    <div class="formel-zeile">EK-Rentabilität = (Gewinn · 100) / durchschnittliches Eigenkapital</div>
+    <div class="formel-zeile" style="margin-top:8px;font-size:0.8rem;opacity:0.8;">durchschnittl. EK = (EK Jahresbeginn + EK Jahresende) / 2</div>
+  </div>
+
+  <p>Da das Eigenkapital im Laufe des Jahres durch Gewinne wächst, nimmt man den <strong>Durchschnittswert</strong> aus Eröffnungs- und Schlussbilanz.</p>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">durchschnittl. EK = (694.000 + 744.000) / 2 = <strong>719.000 €</strong></div>
+    <div class="schritt">EK-Rentabilität = (89.000 · 100) / 719.000 = <strong>12,38 %</strong></div>
+  </div>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Das eingesetzte Eigenkapital hat eine Rendite von 12,38 % erwirtschaftet. Zum Vergleich: Ein Tagesgeldkonto bringt derzeit ca. 2–3 %. Ob 12,38 % gut ist, hängt vom Risiko und der Branche ab.
+  </div>
+</section>
+
+<!-- 2 GK-Rentabilität -->
+<section id="gk-rentabilitaet">
+  <h2>2. Gesamtkapitalrentabilität</h2>
+  <p class="lead">Wie effizient wird das gesamte eingesetzte Kapital genutzt?</p>
+
+  <p>Unternehmen finanzieren sich nicht nur aus Eigenkapital – Fremdkapital spielt ebenfalls eine Rolle. Die Gesamtkapitalrentabilität misst daher, wie rentabel das <strong>gesamte</strong> Kapital eingesetzt wird.</p>
+
+  <p>Da das Fremdkapital Zinsen kostet, müssen diese beim Gewinn wieder hinzugerechnet werden – sonst würde ein stark fremdfinanziertes Unternehmen schlechter abschneiden, obwohl es genauso effizient wirtschaftet.</p>
+
+  <div class="formel-block">
+    <div class="formel-zeile">GK-Rentabilität = ((Gewinn + Fremdkapitalzinsen) · 100) / durchschnittliches Gesamtkapital</div>
+    <div class="formel-zeile" style="margin-top:8px;font-size:0.8rem;opacity:0.8;">durchschnittl. GK = (GK Jahresbeginn + GK Jahresende) / 2</div>
+  </div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">durchschnittl. GK = (915.000 + 1.115.000) / 2 = <strong>1.015.000 €</strong></div>
+    <div class="schritt">GK-Rentabilität = ((89.000 + 19.000) · 100) / 1.015.000</div>
+    <div class="schritt">= (108.000 · 100) / 1.015.000 = <strong>10,64 %</strong></div>
+  </div>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Mit jedem Euro Gesamtkapital wurden 10,64 Cent Ertrag erwirtschaftet. Die GK-Rentabilität ist immer <strong>niedriger als die EK-Rentabilität</strong>, wenn das Fremdkapital günstiger als die GK-Rentabilität verzinst wird (Leverage-Effekt).
+  </div>
+</section>
+
+<!-- 3 Umsatzrentabilität -->
+<section id="umsatzrentabilitaet">
+  <h2>3. Umsatzrentabilität</h2>
+  <p class="lead">Wie viel Prozent des Umsatzes bleibt als Gewinn übrig?</p>
+
+  <p>Hohe Umsätze allein sagen noch nichts über den Erfolg aus. Die Umsatzrentabilität zeigt, wie viel vom erwirtschafteten Umsatz nach Abzug aller Kosten als Gewinn übrig bleibt.</p>
+
+  <div class="formel-block">
+    Umsatzrentabilität = (Gewinn · 100) / Umsatzerlöse
+  </div>
+
+  <p><strong>Umsatzerlöse</strong> = alle Erträge aus dem GuV-Konto (Habenseite).</p>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">Umsatzerlöse = 4.695.500 + 35.000 = <strong>4.730.500 €</strong></div>
+    <div class="schritt">Umsatzrentabilität = (89.000 · 100) / 4.730.500 = <strong>1,88 %</strong></div>
+  </div>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Von jedem Euro Umsatz bleiben 1,88 Cent als Gewinn. Im Großhandel und Einzelhandel sind niedrige Umsatzrentabilitäten branchentypisch, da die Margen gering sind.
+  </div>
+</section>
+
+<!-- 4 GK-Umschlag -->
+<section id="gk-umschlag">
+  <h2>4. Gesamtkapitalumschlagshäufigkeit</h2>
+  <p class="lead">Wie oft erwirtschaftet das Gesamtkapital seinen Wert in Umsatz?</p>
+
+  <p>Umschlagskennzahlen zeigen, wie oft sich bestimmte Kapitalpositionen im Jahr durch Umsatz erneuern. Die Gesamtkapitalumschlagshäufigkeit gibt an, wie viele Euro Umsatz mit einem Euro Gesamtkapital erzielt wurden.</p>
+
+  <div class="formel-block">
+    GK-Umschlagshäufigkeit = Umsatzerlöse / durchschnittliches Gesamtkapital
+  </div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">durchschnittl. GK = 1.015.000 €</div>
+    <div class="schritt">GK-Umschlagshäufigkeit = 4.730.500 / 1.015.000 = <strong>4,66</strong></div>
+  </div>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Das Gesamtkapital hat sich im Jahr <strong>4,66-mal</strong> durch Umsatz erneuert. Je höher die Umschlagshäufigkeit, desto effizienter wird das eingesetzte Kapital genutzt. Das Ergebnis ist eine <strong>reine Zahl</strong> – kein Prozentwert!
+  </div>
+</section>
+
+<!-- 5 EK-Umschlag -->
+<section id="ek-umschlag">
+  <h2>5. Eigenkapitalumschlagshäufigkeit</h2>
+  <p class="lead">Wie oft wird das Eigenkapital durch Umsatz erwirtschaftet?</p>
+
+  <p>Ähnlich wie die GK-Umschlagshäufigkeit, aber bezogen auf das Eigenkapital. Sie zeigt, wie viele Euro Umsatz mit einem Euro Eigenkapital erzielt wurden.</p>
+
+  <div class="formel-block">
+    EK-Umschlagshäufigkeit = Umsatzerlöse / durchschnittliches Eigenkapital
+  </div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="schritt">durchschnittl. EK = 719.000 €</div>
+    <div class="schritt">EK-Umschlagshäufigkeit = 4.730.500 / 719.000 = <strong>6,58</strong></div>
+  </div>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Mit jedem Euro Eigenkapital wurden 6,58 Euro Umsatz erwirtschaftet. Die EK-Umschlagshäufigkeit ist stets <strong>höher</strong> als die GK-Umschlagshäufigkeit, da das Eigenkapital kleiner als das Gesamtkapital ist.
+  </div>
+
+  <div class="achtung">
+    <div class="achtung-titel">Zusammenfassung aller 5 Kennzahlen</div>
+    <table class="btab" style="margin-top:6px">
+      <tr><th>Kennzahl</th><th>Formel (Zähler)</th><th>Formel (Nenner)</th><th>Ergebnis</th></tr>
+      <tr><td>EK-Rentabilität</td><td>Gewinn · 100</td><td>Ø EK</td><td>12,38 %</td></tr>
+      <tr><td>GK-Rentabilität</td><td>(Gewinn + FK-Zinsen) · 100</td><td>Ø GK</td><td>10,64 %</td></tr>
+      <tr><td>Umsatzrentabilität</td><td>Gewinn · 100</td><td>Umsatzerlöse</td><td>1,88 %</td></tr>
+      <tr><td>GK-Umschlag</td><td>Umsatzerlöse</td><td>Ø GK</td><td>4,66</td></tr>
+      <tr><td>EK-Umschlag</td><td>Umsatzerlöse</td><td>Ø EK</td><td>6,58</td></tr>
+    </table>
+  </div>
+</section>
+
+<div class="cta">
+  <h2>Bereit zum Üben?</h2>
+  <p>Drei Stufen: Einzelberechnungen, Jahresvergleich und vollständige Fallstudie mit GuV-Konto.</p>
+  <a href="uebung_rentabilitaet.html">Zur Übung →</a>
+</div>
+
+</div>
+</body>
+</html>
