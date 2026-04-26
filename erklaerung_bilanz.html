@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilanzkennzahlen – Erklärung</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2eb;
+    --surface: #fff;
+    --border: #d9d3c7;
+    --ink: #1a1714;
+    --ink-light: #6b6460;
+    --accent: #c0392b;
+    --green: #1a6b3c;
+    --green-light: #eaf4ee;
+    --gold: #b5860d;
+    --gold-light: #fdf8ec;
+    --blue: #1a3a6b;
+    --blue-light: #eef2f9;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; padding-bottom: 60px; }
+
+  header { background: var(--ink); color: #fff; padding: 20px; display: flex; align-items: center; gap: 14px; }
+  header a { color: #c9c0b8; text-decoration: none; font-size: 0.82rem; border: 1px solid #444; padding: 5px 11px; border-radius: 4px; white-space: nowrap; }
+  header a:hover { background: #333; color: #fff; }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: 1.45rem; font-weight: 400; }
+  .subtitle { font-size: 0.72rem; color: #999; margin-top: 2px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* Inhaltsverzeichnis */
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 22px 20px; box-shadow: var(--shadow); max-width: 820px; }
+  .toc h2 { font-family: 'DM Serif Display', serif; font-size: 1rem; font-weight: 400; margin-bottom: 10px; color: var(--ink-light); }
+  .toc-liste { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 6px; list-style: none; }
+  .toc-liste a { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; font-size: 0.88rem; transition: background 0.15s; }
+  .toc-liste a:hover { background: var(--bg); }
+  .toc-num { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--ink-light); background: var(--bg); padding: 2px 7px; border-radius: 12px; }
+
+  .content { padding: 0 20px; max-width: 820px; }
+
+  section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 22px; box-shadow: var(--shadow); }
+  section h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 6px; }
+  section .lead { font-size: 0.86rem; color: var(--ink-light); margin-bottom: 18px; font-style: italic; }
+  section h3 { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; margin: 18px 0 8px; color: var(--ink); }
+  section p { margin-bottom: 12px; font-size: 0.93rem; }
+  section p strong { color: var(--ink); }
+
+  /* Formelblock */
+  .formel-block { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 6px; padding: 14px 18px; margin: 14px 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--blue); }
+
+  /* Strukturbilanz/Bilanz-Tabellen */
+  .btab { width: 100%; border-collapse: collapse; font-size: 0.85rem; font-family: 'DM Mono', monospace; margin: 12px 0; }
+  .btab th { background: var(--ink); color: #fff; padding: 7px 10px; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.04em; }
+  .btab td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  .btab tr:last-child td { border-bottom: none; }
+  .btab tr:nth-child(even) td { background: #faf9f7; }
+  .btab td:last-child, .btab td:nth-child(2) { text-align: right; font-weight: 500; }
+  .btab .summe td { border-top: 2px solid var(--border); font-weight: 700; background: #f0ede6; }
+
+  /* Beispielrechnung-Box */
+  .beispiel { background: var(--gold-light); border-left: 4px solid var(--gold); border-radius: 6px; padding: 14px 18px; margin: 14px 0; }
+  .beispiel-titel { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
+  .beispiel .rechnung { font-family: 'DM Mono', monospace; font-size: 0.95rem; color: #7a5a08; margin-top: 6px; }
+  .beispiel .rechnung strong { color: var(--ink); font-size: 1.05rem; }
+
+  /* Merksatz-Box */
+  .merksatz { background: var(--green-light); border-left: 4px solid var(--green); border-radius: 6px; padding: 14px 18px; margin: 14px 0; font-size: 0.91rem; }
+  .merksatz-titel { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 700; margin-bottom: 6px; }
+
+  /* Richtwert-Tag */
+  .richtwert { display: inline-block; background: var(--bg); border: 1px solid var(--border); padding: 3px 10px; border-radius: 16px; font-size: 0.78rem; font-family: 'DM Mono', monospace; color: var(--ink-light); margin-top: 4px; }
+
+  /* CTA zur Übung */
+  .cta { text-align: center; padding: 30px 24px; background: var(--ink); color: #fff; border-radius: var(--radius); margin: 30px 0; }
+  .cta h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 8px; color: #fff; }
+  .cta p { color: #c9c0b8; margin-bottom: 16px; font-size: 0.92rem; }
+  .cta a { display: inline-block; background: var(--gold); color: var(--ink); padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.92rem; transition: transform 0.18s; }
+  .cta a:hover { transform: translateY(-1px); }
+
+  /* Anker-Versatz für Sticky Header */
+  section { scroll-margin-top: 20px; }
+
+  @media (max-width: 600px) {
+    header { padding: 14px; }
+    .toc, .content { padding-left: 14px; padding-right: 14px; }
+    section { padding: 18px; }
+    section h2 { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Übersicht</a>
+  <div>
+    <h1>Bilanzkennzahlen – Erklärung</h1>
+    <div class="subtitle">Strukturbilanz · Vermögen · Kapital · Liquidität</div>
+  </div>
+</header>
+
+<!-- Inhaltsverzeichnis -->
+<nav class="toc">
+  <h2>Inhalt</h2>
+  <ul class="toc-liste">
+    <li><a href="#strukturbilanz"><span class="toc-num">0</span>Die Strukturbilanz</a></li>
+    <li><a href="#anlageintensitaet"><span class="toc-num">1</span>Anlageintensität</a></li>
+    <li><a href="#umlaufintensitaet"><span class="toc-num">2</span>Umlaufintensität</a></li>
+    <li><a href="#ek-quote"><span class="toc-num">3</span>Eigenkapitalquote</a></li>
+    <li><a href="#fk-quote"><span class="toc-num">4</span>Fremdkapitalquote</a></li>
+    <li><a href="#anlagendeckung"><span class="toc-num">5</span>Anlagendeckung I</a></li>
+    <li><a href="#liquiditaet"><span class="toc-num">6</span>Liquiditätsgrad</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+<!-- ════════════════════════════════════ Strukturbilanz -->
+<section id="strukturbilanz">
+  <h2>Die Strukturbilanz</h2>
+  <p class="lead">Bevor Kennzahlen berechnet werden können, wird die Bilanz aufbereitet.</p>
+
+  <p>Eine vollständige Bilanz mit allen Einzelpositionen ist meist unübersichtlich. Um sie analysieren zu können, fasst man verwandte Positionen zu Gesamtwerten zusammen – das Ergebnis ist die <strong>Strukturbilanz</strong>.</p>
+
+  <p>Aus der ausführlichen Schlussbilanz der Mediaworld e. K. wird so:</p>
+
+  <h3>Schlussbilanz Mediaworld e. K. (gekürzt)</h3>
+  <table class="btab">
+    <tr><th>Aktiva</th><th>(€)</th><th>Passiva</th><th>(€)</th></tr>
+    <tr><td>Grundstücke</td><td>170.000</td><td>Eigenkapital</td><td>744.000</td></tr>
+    <tr><td>Gebäude</td><td>387.000</td><td>Darlehensschuld</td><td>318.000</td></tr>
+    <tr><td>Fuhrpark</td><td>35.000</td><td>Verbindlichkeiten a. LL.</td><td>53.000</td></tr>
+    <tr><td>BGA</td><td>92.000</td><td></td><td></td></tr>
+    <tr><td>Warenbestand</td><td>273.000</td><td></td><td></td></tr>
+    <tr><td>Forderungen a. LL.</td><td>88.000</td><td></td><td></td></tr>
+    <tr><td>Bank</td><td>52.000</td><td></td><td></td></tr>
+    <tr><td>Kasse</td><td>18.000</td><td></td><td></td></tr>
+    <tr class="summe"><td>Summe</td><td>1.115.000</td><td>Summe</td><td>1.115.000</td></tr>
+  </table>
+
+  <h3>Strukturbilanz Mediaworld e. K.</h3>
+  <table class="btab">
+    <tr><th>Aktiva</th><th>(€)</th><th>Passiva</th><th>(€)</th></tr>
+    <tr><td>Anlagevermögen</td><td>684.000</td><td>Eigenkapital</td><td>744.000</td></tr>
+    <tr><td>Umlaufvermögen</td><td>431.000</td><td>Fremdkapital</td><td>371.000</td></tr>
+    <tr class="summe"><td>Summe</td><td>1.115.000</td><td>Summe</td><td>1.115.000</td></tr>
+  </table>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Merke</div>
+    <strong>Anlagevermögen</strong> = alle Positionen, die dem Unternehmen langfristig dienen (Grundstücke, Gebäude, Fuhrpark, BGA).<br>
+    <strong>Umlaufvermögen</strong> = alle Positionen, die kurzfristig umgesetzt werden (Warenbestand, Forderungen, Bank, Kasse).<br>
+    <strong>Fremdkapital</strong> = alles, was nicht Eigenkapital ist (Darlehen + Verbindlichkeiten).
+  </div>
+
+  <p>Mit der Strukturbilanz lassen sich nun die wesentlichen Bilanzkennzahlen berechnen. Im Folgenden werden alle sechs durchgegangen – jeweils anhand der Mediaworld e. K.</p>
+</section>
+
+<!-- ════════════════════════════════════ 1 Anlageintensität -->
+<section id="anlageintensitaet">
+  <h2>1. Anlageintensität</h2>
+  <p class="lead">Wie viel Prozent des Vermögens steckt im Anlagevermögen?</p>
+
+  <p>Die Anlageintensität zeigt, welcher Anteil des Gesamtvermögens langfristig im Unternehmen gebunden ist – z. B. in Gebäuden, Maschinen oder dem Fuhrpark.</p>
+
+  <div class="formel-block">Anlageintensität = (Anlagevermögen · 100) / Gesamtvermögen</div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="rechnung">(684.000 · 100) / 1.115.000 = <strong>61,35 %</strong></div>
+  </div>
+
+  <p>61,35 % des Gesamtvermögens stecken in langfristig gebundenen Positionen. Da die Mediaworld e. K. eigene Gebäude besitzt, ist das ein realistischer Wert. Bei einem reinen Handelsbetrieb ohne eigene Immobilien wäre die Anlageintensität deutlich geringer.</p>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Eine hohe Anlageintensität deutet auf hohe <strong>Fixkosten</strong> hin (Abschreibungen, Instandhaltung). Das Unternehmen ist bei Umsatzrückgängen weniger flexibel. Eine niedrige Anlageintensität spricht für mehr Flexibilität, da weniger Kapital langfristig gebunden ist.
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ 2 Umlaufintensität -->
+<section id="umlaufintensitaet">
+  <h2>2. Umlaufintensität</h2>
+  <p class="lead">Das Gegenstück zur Anlageintensität.</p>
+
+  <p>Die Umlaufintensität zeigt, wie viel Prozent des Gesamtvermögens kurzfristig umgesetzt werden – also Waren, Forderungen und liquide Mittel.</p>
+
+  <div class="formel-block">Umlaufintensität = (Umlaufvermögen · 100) / Gesamtvermögen</div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="rechnung">(431.000 · 100) / 1.115.000 = <strong>38,65 %</strong></div>
+  </div>
+
+  <p>38,65 % des Gesamtvermögens sind Umlaufvermögen, hauptsächlich der Warenbestand. Das ist für ein Handelsunternehmen völlig in Ordnung.</p>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Hinweis</div>
+    Anlage- und Umlaufintensität ergeben zusammen immer <strong>100 %</strong>. Beide zusammen bilden das gesamte Vermögen ab. Die Berechnung der einen Kennzahl reicht daher rechnerisch aus.
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ 3 EK-Quote -->
+<section id="ek-quote">
+  <h2>3. Eigenkapitalquote</h2>
+  <p class="lead">Wie viel Prozent des Kapitals ist eigenes Geld?</p>
+
+  <p>Während die Vermögensstruktur (Anlage-/Umlaufintensität) die Aktivseite betrachtet, beschäftigt sich die Kapitalstruktur mit der Passivseite – also der Frage, woher das Geld kommt.</p>
+
+  <div class="formel-block">Eigenkapitalquote = (Eigenkapital · 100) / Gesamtkapital</div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="rechnung">(744.000 · 100) / 1.115.000 = <strong>66,73 %</strong></div>
+  </div>
+
+  <p>Mit 66,73 % hat die Mediaworld e. K. eine sehr hohe Eigenkapitalquote. Im bundesdeutschen Durchschnitt liegt die Eigenkapitalquote mittelständischer Unternehmen bei ca. 25 %.</p>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Eine hohe EK-Quote schafft <strong>Sicherheit</strong> und sorgt für ein besseres Banken-Rating. Verluste können zunächst aus dem Eigenkapital aufgefangen werden, ohne dass das Unternehmen sofort in Schwierigkeiten gerät.
+    <span class="richtwert">Richtwert mittelständische Unternehmen: ca. 25 %</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ 4 FK-Quote -->
+<section id="fk-quote">
+  <h2>4. Fremdkapitalquote</h2>
+  <p class="lead">Wie stark ist das Unternehmen von Gläubigern abhängig?</p>
+
+  <p>Die Fremdkapitalquote ist das rechnerische Gegenstück zur Eigenkapitalquote. Sie zeigt, welcher Anteil des Gesamtkapitals von außen finanziert wurde – durch Darlehen, Lieferantenkredite oder andere Verbindlichkeiten.</p>
+
+  <div class="formel-block">Fremdkapitalquote = (Fremdkapital · 100) / Gesamtkapital</div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="rechnung">(371.000 · 100) / 1.115.000 = <strong>33,27 %</strong></div>
+  </div>
+
+  <p>Die Mediaworld e. K. ist nur zu rund einem Drittel fremdfinanziert. EK-Quote (66,73 %) und FK-Quote (33,27 %) ergeben zusammen 100 %.</p>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Viel Fremdkapital bedeutet <strong>hohe Abhängigkeit</strong> von Banken und anderen Gläubigern. Das Fremdkapital muss verzinst und zurückgezahlt werden – das belastet das Unternehmen, besonders in schwachen Geschäftsjahren.
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ 5 Anlagendeckung I -->
+<section id="anlagendeckung">
+  <h2>5. Anlagendeckung I</h2>
+  <p class="lead">Ist das langfristig gebundene Vermögen auch langfristig finanziert?</p>
+
+  <p>Die Anlagendeckung I verbindet Aktiv- und Passivseite: Sie zeigt, wie viel des Anlagevermögens durch Eigenkapital gedeckt ist. Anlagevermögen steht dem Unternehmen langfristig zur Verfügung – also sollte es auch langfristig finanziert sein. Eigenkapital ist die langfristigste Finanzierung überhaupt.</p>
+
+  <div class="formel-block">Anlagendeckung I = (Eigenkapital · 100) / Anlagevermögen</div>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="rechnung">(744.000 · 100) / 684.000 = <strong>108,77 %</strong></div>
+  </div>
+
+  <p>Bei der Mediaworld e. K. ist das Anlagevermögen sogar zu mehr als 100 % durch Eigenkapital gedeckt – ein sehr guter Wert.</p>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Aussagekraft</div>
+    Liegt die Anlagendeckung I unter 100 %, ist das nicht automatisch schlimm: Ein Teil des Anlagevermögens wird dann durch <strong>langfristiges Fremdkapital</strong> (Darlehen) finanziert – das ist ebenfalls in Ordnung. Bedenklich wird es erst, wenn auch nach Hinzurechnen langfristiger Darlehen das Anlagevermögen nicht gedeckt ist.
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ 6 Liquiditätsgrad -->
+<section id="liquiditaet">
+  <h2>6. Liquiditätsgrad</h2>
+  <p class="lead">Kann das Unternehmen seine kurzfristigen Schulden sofort bezahlen?</p>
+
+  <p>Während die anderen Kennzahlen die Vermögens- und Kapitalstruktur betrachten, prüft der Liquiditätsgrad die <strong>Zahlungsfähigkeit</strong>. Konkret: Reicht das Bargeld plus Bankguthaben aus, um die kurzfristigen Verbindlichkeiten zu bezahlen?</p>
+
+  <div class="formel-block">Liquiditätsgrad = (Liquide Mittel · 100) / kurzfristiges Fremdkapital</div>
+
+  <p><strong>Wichtig:</strong> Für den Liquiditätsgrad reicht die Strukturbilanz nicht aus – man braucht die einzelnen Bilanzwerte (Kasse, Bank, Verbindlichkeiten a. LL.).</p>
+
+  <div class="beispiel">
+    <div class="beispiel-titel">Beispiel Mediaworld e. K.</div>
+    <div class="rechnung">Liquide Mittel = Bank 52.000 + Kasse 18.000 = 70.000 €<br>
+    Kurzfr. FK = Verbindlichkeiten a. LL. 53.000 €<br>
+    (70.000 · 100) / 53.000 = <strong>132,08 %</strong></div>
+  </div>
+
+  <p>Die Mediaworld e. K. könnte ihre kurzfristigen Schulden sofort bezahlen und hätte sogar noch Geld übrig.</p>
+
+  <div class="merksatz">
+    <div class="merksatz-titel">Richtwert</div>
+    Der Liquiditätsgrad sollte bei etwa <strong>20 %</strong> liegen, sodass das Unternehmen mindestens ein Fünftel seiner kurzfristigen Schulden jederzeit sofort begleichen kann.
+    <span class="richtwert">Richtwert: ca. 20 %</span>
+  </div>
+
+  <div class="merksatz" style="background:#fdf0ee;border-color:var(--accent);color:var(--accent)">
+    <div class="merksatz-titel" style="color:var(--accent)">Achtung</div>
+    Eine Bilanz ist immer eine <strong>Zeitpunktbetrachtung</strong> – sie wird zum Geschäftsjahresende erstellt. Schon am nächsten Tag kann der Liquiditätsgrad ganz anders aussehen, etwa wenn eine Rechnung bezahlt oder eine Forderung beglichen wird.
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Bereit zum Üben?</h2>
+  <p>Drei Schwierigkeitsstufen mit Aufgaben aus realen Bilanzen, integriertem Taschenrechner und Lösungshilfen.</p>
+  <a href="uebung_bilanz.html">Zur Übung →</a>
+</div>
+
+</div>
+</body>
+</html>
