@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernmodule Jahresabschluss</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2eb;
+    --surface: #fff;
+    --border: #d9d3c7;
+    --ink: #1a1714;
+    --ink-light: #6b6460;
+    --accent: #c0392b;
+    --green: #1a6b3c;
+    --green-light: #eaf4ee;
+    --gold: #b5860d;
+    --gold-light: #fdf8ec;
+    --blue: #1a3a6b;
+    --blue-light: #eef2f9;
+    --purple: #5b2d9e;
+    --purple-light: #f0eaff;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Header */
+  header {
+    background: var(--ink);
+    color: #fff;
+    padding: 36px 24px 30px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin-bottom: 6px;
+  }
+  header .untertitel {
+    font-size: 0.84rem;
+    color: #999;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Hauptinhalt */
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  .intro {
+    text-align: center;
+    margin-bottom: 36px;
+    color: var(--ink-light);
+    font-size: 1rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Modul-Grid */
+  .module {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    margin-bottom: 40px;
+  }
+
+  .modul {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .modul:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .modul-kopf {
+    padding: 22px 22px 16px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .modul-nr {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    background: var(--bg);
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .modul-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 3px 9px;
+    border-radius: 16px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .tag-bilanz       { background: var(--blue-light); color: var(--blue); }
+  .tag-rentabilitaet { background: var(--gold-light); color: var(--gold); }
+  .tag-umschlag      { background: var(--purple-light); color: var(--purple); }
+
+  .modul h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .modul-beschreibung {
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    line-height: 1.55;
+  }
+
+  .modul-inhalt {
+    padding: 18px 22px 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kennzahlen-liste {
+    list-style: none;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .kennzahlen-liste li {
+    font-size: 0.84rem;
+    color: var(--ink-light);
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+  .kennzahlen-liste li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--ink-light);
+    font-weight: 700;
+  }
+
+  .modul-actions {
+    display: flex;
+    gap: 9px;
+  }
+  .btn {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.18s;
+    color: var(--ink-light);
+    background: transparent;
+  }
+  .btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .btn-uebung {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .btn-uebung:hover {
+    background: #333;
+    color: #fff;
+  }
+
+  .modul.kommt-bald .modul-kopf,
+  .modul.kommt-bald .modul-inhalt { opacity: 0.55; }
+  .modul.kommt-bald { pointer-events: none; }
+  .modul.kommt-bald .badge-bald {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-8deg);
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  /* ── Footer / Hinweis */
+  .hinweis-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    box-shadow: var(--shadow);
+  }
+  .hinweis-box h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .hinweis-box p {
+    font-size: 0.88rem;
+    color: var(--ink-light);
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--ink-light);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+    margin-top: 30px;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 26px 18px 22px; }
+    header h1 { font-size: 1.55rem; }
+    main { padding: 28px 18px 50px; }
+    .module { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Lernmodule Jahresabschluss</h1>
+  <div class="untertitel">Bilanzanalyse · Kennzahlen · Übungen</div>
+</header>
+
+<main>
+
+  <p class="intro">
+    Wähle ein Lernmodul. Jedes Modul enthält eine ausführliche Erklärung mit Beispielen
+    und interaktive Übungen in drei Schwierigkeitsstufen.
+  </p>
+
+  <div class="module">
+
+    <!-- Modul 1: Bilanzkennzahlen -->
+    <article class="modul">
+      <div class="modul-kopf">
+        <span class="modul-nr">01</span>
+        <span class="modul-tag tag-bilanz">Bilanzanalyse</span>
+        <h2>Bilanzkennzahlen</h2>
+        <p class="modul-beschreibung">
+          Vermögens- und Kapitalstruktur eines Unternehmens analysieren – auf Basis der Strukturbilanz.
+        </p>
+      </div>
+      <div class="modul-inhalt">
+        <ul class="kennzahlen-liste">
+          <li>Anlage- und Umlaufintensität</li>
+          <li>Eigen- und Fremdkapitalquote</li>
+          <li>Anlagendeckung I</li>
+          <li>Liquiditätsgrad</li>
+        </ul>
+        <div class="modul-actions">
+          <a href="erklaerung_bilanz.html" class="btn">Erklärung</a>
+          <a href="uebung_bilanz.html" class="btn btn-uebung">Übung</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Modul 2: Rentabilitätskennzahlen -->
+    <article class="modul">
+      <div class="modul-kopf">
+        <span class="modul-nr">02</span>
+        <span class="modul-tag tag-rentabilitaet">Erfolgsanalyse</span>
+        <h2>Rentabilitätskennzahlen</h2>
+        <p class="modul-beschreibung">
+          Den Erfolg eines Unternehmens messen: Wie effizient setzt es Kapital und Umsatz in Gewinn um?
+        </p>
+      </div>
+      <div class="modul-inhalt">
+        <ul class="kennzahlen-liste">
+          <li>Eigenkapitalrentabilität</li>
+          <li>Gesamtkapitalrentabilität</li>
+          <li>Umsatzrentabilität</li>
+        </ul>
+        <div class="modul-actions">
+          <a href="erklaerung_rentabilitaet.html" class="btn">Erklärung</a>
+          <a href="uebung_rentabilitaet.html" class="btn btn-uebung">Übung</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Modul 3: Umschlagskennzahlen -->
+    <article class="modul">
+      <div class="modul-kopf">
+        <span class="modul-nr">03</span>
+        <span class="modul-tag tag-umschlag">Tempo-Analyse</span>
+        <h2>Umschlagskennzahlen</h2>
+        <p class="modul-beschreibung">
+          Wie schnell setzt das Unternehmen Waren um und wie lange dauern Lager und Forderungen?
+        </p>
+      </div>
+      <div class="modul-inhalt">
+        <ul class="kennzahlen-liste">
+          <li>Lagerumschlag</li>
+          <li>Durchschnittliche Lagerdauer</li>
+          <li>Debitorenziel & Kreditorenziel</li>
+        </ul>
+        <div class="modul-actions">
+          <a href="erklaerung_umschlag.html" class="btn">Erklärung</a>
+          <a href="uebung_umschlag.html" class="btn btn-uebung">Übung</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="hinweis-box">
+    <h3>Tipp zum Lernen</h3>
+    <p>Lies zuerst die Erklärung mit dem durchgängigen Mediaworld-Beispiel und arbeite dich dann durch die drei Stufen der Übung. In jeder Übungsaufgabe gibt es eine ausklappbare Hilfe und einen integrierten Taschenrechner – ideal für die Bearbeitung am Smartphone.</p>
+  </div>
+
+</main>
+
+<footer>
+  Berufskolleg · BFS 2 · Wirtschaft &nbsp;·&nbsp; Lernmodule Jahresabschluss
+</footer>
+
+</body>
+</html>
