@@ -1,3 +1,8 @@
+Hier ist der vollständig aktualisierte Code für die Datei `uebung_rentabilitaet.html` (Rentabilitäts- und Umschlagskennzahlen).
+
+Das alte 4-Spalten-Layout des Taschenrechners wurde komplett entfernt und durch den neuen, fehlerfreien **Casio-Style-Taschenrechner im exakten 5-Spalten-Grid** (inklusive `⌫` für QR, `√` für die wissenschaftliche Notation und `=` für EXE) sowie der darauf abgestimmten kaufmännischen JavaScript-Rechenlogik (mit deutscher Komma-Formatierung) ersetzt.
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -48,7 +53,7 @@
   .btab th{background:var(--ink);color:#fff;padding:6px 10px;text-align:left;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.04em;font-weight:600;}
   .btab td{padding:5px 10px;border-bottom:1px solid var(--border);}
   .btab tr:last-child td{border-bottom:none;}
-  .btab tr:nth-child(even) td{background:#faf9f7;}
+  .btab tr:nth-child(even) td { background: #faf9f7; }
   .btab td:last-child{text-align:right;font-weight:500;}
   .btab .summe td{border-top:2px solid var(--border);font-weight:700;background:#f0ede6;}
   .btab .gruppe td{font-weight:700;color:var(--ink-light);font-size:0.73rem;text-transform:uppercase;letter-spacing:0.05em;background:#f0ede6;padding-top:8px;}
@@ -114,25 +119,107 @@
   .abschluss .score{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--green);line-height:1;margin-bottom:8px;}
   .abschluss p{color:var(--ink-light);font-size:0.91rem;margin-bottom:20px;}
 
-  /* Taschenrechner */
-  #tr-toggle{position:fixed;bottom:18px;right:18px;z-index:200;background:var(--ink);color:#fff;border:none;border-radius:50px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;gap:7px;transition:transform 0.2s;}
-  #tr-toggle:hover{transform:scale(1.04);}
-  #taschenrechner{position:fixed;bottom:70px;right:18px;z-index:199;background:#1e1c1a;border-radius:18px;padding:16px;width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:none;animation:trEin 0.2s ease;}
-  @keyframes trEin{from{opacity:0;transform:translateY(12px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
-  #tr-display{background:#111;border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:right;}
-  #tr-ausdruck{font-family:'DM Mono',monospace;font-size:0.72rem;color:#888;min-height:16px;word-break:break-all;}
-  #tr-ergebnis{font-family:'DM Mono',monospace;font-size:1.6rem;color:#fff;min-height:38px;word-break:break-all;}
-  .tr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
-  .tr-btn{padding:14px 0;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.12s,transform 0.1s;-webkit-tap-highlight-color:transparent;}
-  .tr-btn:active{transform:scale(0.93);opacity:0.85;}
-  .tr-zahl{background:#3a3835;color:#fff;}
-  .tr-op{background:#c0392b;color:#fff;font-size:1.1rem;}
-  .tr-fn{background:#2c2a28;color:#ccc;font-size:0.85rem;}
-  .tr-gleich{background:#e67e22;color:#fff;font-size:1.1rem;}
-  .tr-null{grid-column:span 2;}
-  .tr-klammer{background:#2c4a2c;color:#7ecf7e;font-size:1rem;font-weight:700;}
+  /* ════════════════════════════════════════
+       TASCHENRECHNER STYLES (5 Spalten)
+     ════════════════════════════════════════ */
+  #tr-toggle {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 200;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 11px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: transform 0.2s;
+  }
+  #tr-toggle:hover { transform: scale(1.04); }
 
-  @media(max-width:600px){header{padding:14px;}.tabs{padding:16px 14px 0;}.tab{padding:7px 11px;font-size:0.78rem;}.content{padding:16px 14px;}.karte{padding:16px;}.eingabe-zeile label{min-width:100%;} #taschenrechner{width:calc(100vw - 28px);right:14px;bottom:68px;}}
+  #taschenrechner {
+    position: fixed;
+    bottom: 70px;
+    right: 18px;
+    z-index: 199;
+    background: #11151c; /* Dunkles Gehäuse */
+    border-radius: 14px;
+    padding: 14px;
+    width: 280px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+    display: none;
+    animation: trEin 0.2s ease;
+    border: 1px solid #2c3e50;
+  }
+  @keyframes trEin { from { opacity:0; transform:translateY(12px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+  #tr-display {
+    background: #a3b899; /* LCD graugrün */
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    text-align: right;
+    border: 2px solid #555;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+  }
+  #tr-ausdruck {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: #222;
+    min-height: 16px;
+    word-break: break-all;
+    text-align: left;
+  }
+  #tr-ergebnis {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    min-height: 34px;
+    word-break: break-all;
+    text-align: right;
+  }
+
+  .tr-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Exakt 5 gleich breite Spalten */
+    gap: 6px;
+  }
+  .tr-btn {
+    padding: 11px 0;
+    border: 1px solid #222;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.05s;
+    text-align: center;
+    box-shadow: 0 2px 0 #000;
+  }
+  .tr-btn:active { transform: translateY(2px); box-shadow: none; }
+  
+  .tr-zahl   { background: #ffffff; color: #000; }
+  .tr-op     { background: #ebf5fb; color: #1b4f72; }
+  .tr-fn     { background: #f5b7b1; color: #78281f; }
+  .tr-gleich { background: #5dade2; color: #fff; }
+
+  @media(max-width:600px){
+    header{padding:14px;}
+    .tabs{padding:16px 14px 0;}
+    .tab{padding:7px 11px;font-size:0.78rem;}
+    .content{padding:16px 14px;}
+    .karte{padding:16px;}
+    .eingabe-zeile label{min-width:100%;} 
+    #taschenrechner{width:calc(100vw - 28px);right:14px;bottom:68px;}
+  }
 </style>
 </head>
 <body>
@@ -153,11 +240,9 @@
 
 <div class="content">
 
-<!-- ══════════════ STUFE 1 ══════════════ -->
 <div class="level active" id="level-1">
   <div class="fortschritt-bar"><div class="fortschritt-fill" id="p1"></div></div>
 
-  <!-- A1: EK-Rentabilität -->
   <div class="karte" id="l1a1">
     <div class="aufgaben-nr">Aufgabe 1 von 5</div>
     <span class="typ typ-berechnung">Berechnung</span>
@@ -187,7 +272,6 @@
     <div class="fb" id="f1a1"></div>
   </div>
 
-  <!-- A2: GK-Rentabilität -->
   <div class="karte" id="l1a2" style="display:none">
     <div class="aufgaben-nr">Aufgabe 2 von 5</div>
     <span class="typ typ-berechnung">Berechnung</span>
@@ -214,7 +298,6 @@
     <div class="fb" id="f1a2"></div>
   </div>
 
-  <!-- A3: Umsatzrentabilität -->
   <div class="karte" id="l1a3" style="display:none">
     <div class="aufgaben-nr">Aufgabe 3 von 5</div>
     <span class="typ typ-berechnung">Berechnung</span>
@@ -230,7 +313,7 @@
     <details class="hilfe">
       <summary>Erklärung & Lösungsweg</summary>
       <div class="hilfe-inhalt">
-        <p><strong>Was sind Umsatzerlöse?</strong> Die Summe aller Erträge auf der Habenseite des GuV-Kontos – also alle Einnahmen des Unternehmens im Geschäftsjahr.</p>
+        <p><strong>What sind Umsatzerlöse?</strong> Die Summe aller Erträge auf der Habenseite des GuV-Kontos – also alle Einnahmen des Unternehmens im Geschäftsjahr.</p>
         <p><strong>Was zeigt die Umsatzrentabilität?</strong> Von jedem Euro Umsatz, den das Unternehmen macht, bleibt dieser Prozentsatz als Gewinn übrig. Im Handel sind die Werte oft niedrig (1–5 %), da die Margen gering sind.</p>
         <div class="schritt">Umsatzerlöse = 1.580.000 + 70.000 = 1.650.000 €</div>
         <div class="schritt">Umsatzrentabilität = (85.000 · 100) / 1.650.000</div>
@@ -248,7 +331,6 @@
     <div class="fb" id="f1a3"></div>
   </div>
 
-  <!-- A4: GK-Umschlag -->
   <div class="karte" id="l1a4" style="display:none">
     <div class="aufgaben-nr">Aufgabe 4 von 5</div>
     <span class="typ typ-berechnung">Berechnung</span>
@@ -275,7 +357,6 @@
     <div class="fb" id="f1a4"></div>
   </div>
 
-  <!-- A5: EK-Umschlag -->
   <div class="karte" id="l1a5" style="display:none">
     <div class="aufgaben-nr">Aufgabe 5 von 5</div>
     <span class="typ typ-berechnung">Berechnung</span>
@@ -308,11 +389,9 @@
   </div>
 </div>
 
-<!-- ══════════════ STUFE 2 ══════════════ -->
 <div class="level" id="level-2">
   <div class="fortschritt-bar"><div class="fortschritt-fill" id="p2"></div></div>
 
-  <!-- A1: Alle 5 ohne Formeln -->
   <div class="karte" id="l2a1">
     <div class="aufgaben-nr">Aufgabe 1 von 3</div>
     <span class="typ typ-analyse">Berechnung ohne Formelangabe</span>
@@ -348,7 +427,6 @@
     <div class="fb" id="f2a1"></div>
   </div>
 
-  <!-- A2: Jahresvergleich -->
   <div class="karte" id="l2a2" style="display:none">
     <div class="aufgaben-nr">Aufgabe 2 von 3</div>
     <span class="typ typ-vergleich">Jahresvergleich</span>
@@ -379,7 +457,6 @@
     <div class="fb" id="f2a2"></div>
   </div>
 
-  <!-- A3: Rückwärtsrechnen -->
   <div class="karte" id="l2a3" style="display:none">
     <div class="aufgaben-nr">Aufgabe 3 von 3</div>
     <span class="typ typ-analyse">Rückwärtsrechnen</span>
@@ -406,7 +483,6 @@
   </div>
 </div>
 
-<!-- ══════════════ STUFE 3 ══════════════ -->
 <div class="level" id="level-3">
   <div class="fortschritt-bar"><div class="fortschritt-fill" id="p3"></div></div>
 
@@ -469,9 +545,10 @@
   </div>
 </div>
 
-</div><!-- /content -->
+</div><button id="tr-toggle" onclick="toggleTR()">
+  <span>🧮</span> Rechner
+</button>
 
-<!-- Taschenrechner -->
 <div id="taschenrechner">
   <div id="tr-display">
     <div id="tr-ausdruck"></div>
@@ -498,8 +575,11 @@
 
     <button class="tr-btn tr-zahl" onclick="trZahl('0')">0</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('.')">,</button>
-    <button class="tr-btn tr-fn" onclick="trFn('SQRT')">√</button>
-    <button class="tr-btn tr-fn" onclick="trFn('+/-')">(−)</button>
+    <button class="tr-btn tr-op" onclick="trFn('SQRT')">√</button>
+    <button class="tr-btn tr-op" onclick="trKlammer('(')">(</button>
+    <button class="tr-btn tr-op" onclick="trKlammer(')')">)</button>
+    
+    <div style="grid-column: span 4;"></div>
     <button class="tr-btn tr-gleich" onclick="trGleich()">=</button>
   </div>
 </div>
@@ -579,7 +659,6 @@ function toggleMC2(el){el.classList.toggle('richtig');}
 function pruefeL2A2(){
   const ausgewaehlt=Array.from(document.querySelectorAll('#mc-l2a2 .mc-opt.richtig'));
   const text=document.getElementById('i2a2-text').value.trim();
-  // Richtig: A (EK-Rent) und D (EK-Umschlag) – stärkste rel. Verschlechterung
   const werte=ausgewaehlt.map(e=>e.querySelector('.mc-bul').textContent);
   const hatA=werte.includes('A'),hatD=werte.includes('D');
   if(hatA&&hatD&&ausgewaehlt.length===2&&text.length>=30){
@@ -662,16 +741,131 @@ function loesungL3(){
     <strong>Beurteilung:</strong> Die Mediaworld e. K. wirtschaftet profitabel. Die EK-Rentabilität von ${L3.ek} % liegt deutlich über der Rendite sicherer Geldanlagen. Die GK-Rentabilität (${L3.gk} %) übersteigt die Fremdkapitalzinsen (ca. 2 %), was bedeutet: jeder zusätzlich aufgenommene Euro FK bringt mehr ein als er kostet. Die niedrige Umsatzrentabilität (${L3.ur} %) ist im Großhandel branchentypisch und wird durch das hohe Umsatzvolumen kompensiert.`);
 }
 
-// Taschenrechner
-let trAusdruck='',trNeu=true,trLetzteOp=false;
-const trDisp=()=>document.getElementById('tr-ergebnis');
-const trExpr=()=>document.getElementById('tr-ausdruck');
-function toggleTR(){const tr=document.getElementById('taschenrechner');const o=tr.style.display==='block';tr.style.display=o?'none':'block';document.getElementById('tr-toggle').innerHTML=o?'<span>🧮</span> Rechner':'<span>✕</span> Schließen';}
-function trZahl(z){if(z==='.'&&trDisp().textContent.includes('.'))return;if(trNeu||trDisp().textContent==='0'){trDisp().textContent=z==='.'?'0.':z;trNeu=false;}else{if(trDisp().textContent.replace('-','').length>=12)return;trDisp().textContent+=z;}trLetzteOp=false;}
-function trOp(op){if(trLetzteOp){trAusdruck=trAusdruck.slice(0,-1)+op;trExpr().textContent=trAusdruck;return;}trAusdruck+=trDisp().textContent+op;trExpr().textContent=trAusdruck;trNeu=true;trLetzteOp=true;}
-function trGleich(){if(!trAusdruck)return;try{const a=trAusdruck+trDisp().textContent;const e=Function('"use strict";return('+a+')')();trExpr().textContent=a+' =';trDisp().textContent=String(Math.round(e*100000)/100000);trAusdruck='';trNeu=true;trLetzteOp=false;}catch{trDisp().textContent='Fehler';trAusdruck='';trNeu=true;}}
-function trFn(fn){const a=parseFloat(trDisp().textContent);if(fn==='AC'){trDisp().textContent='0';trAusdruck='';trExpr().textContent='';trNeu=true;trLetzteOp=false;}else if(fn==='+/-'){trDisp().textContent=String(-a);trNeu=false;}else if(fn==='%'){trDisp().textContent=String(a/100);trNeu=false;}else if(fn==='DEL'){const c=trDisp().textContent;trDisp().textContent=c.length>1?c.slice(0,-1):'0';}}
-function trKlammer(k){if(k==='('){trAusdruck+=trNeu?'(':trDisp().textContent+'*(';trExpr().textContent=trAusdruck;trNeu=true;trLetzteOp=false;}else{trAusdruck+=trDisp().textContent+')';trExpr().textContent=trAusdruck;trNeu=true;trLetzteOp=false;}}
+// ════════════════════════════════════════
+// CASIO-STYLE TASCHENRECHNER LOGIK
+// ════════════════════════════════════════
+let trAusdruck = "";
+let trNeu = true;
+
+const trDisp = () => document.getElementById('tr-ergebnis');
+const trExpr = () => document.getElementById('tr-ausdruck');
+const numFormatter = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
+
+function toggleTR(){
+  const tr = document.getElementById('taschenrechner');
+  const offen = tr.style.display === 'block';
+  tr.style.display = offen ? 'none' : 'block';
+  document.getElementById('tr-toggle').innerHTML = offen ? '<span>🧮</span> Rechner' : '<span>✕</span> Schließen';
+}
+
+function updateTRDisplay() {
+  let visuell = trAusdruck
+    .replace(/\*/g, " × ")
+    .replace(/\//g, " ÷ ")
+    .replace(/\+/g, " + ")
+    .replace(/-/g, " − ")
+    .replace(/Math.sqrt\(/g, "√( ");
+  trExpr().innerText = visuell;
+}
+
+function trZahl(z) {
+  if (z === '.' && trDisp().innerText.includes(',')) return;
+  if (trNeu || trDisp().innerText === '0') {
+    trDisp().innerText = z === '.' ? '0,' : z.replace('.', ',');
+    trNeu = false;
+  } else {
+    if (trDisp().innerText.replace(/[^0-9]/g, '').length >= 12) return;
+    trDisp().innerText += z.replace('.', ',');
+  }
+}
+
+function trOp(op) {
+  let aktuellerWert = trDisp().innerText.replace(/\./g, '').replace(',', '.');
+  
+  if (["+", "-", "*", "/"].includes(trAusdruck.slice(-1)) && trNeu) {
+    trAusdruck = trAusdruck.slice(0, -1) + op;
+  } else {
+    trAusdruck += aktuellerWert + op;
+  }
+  
+  updateTRDisplay();
+  trNeu = true;
+}
+
+function trKlammer(kl) {
+  if (kl === '(') {
+    trAusdruck += trNeu ? '(' : trDisp().innerText.replace(/\./g, '').replace(',', '.') + '*(';
+  } else {
+    trAusdruck += trDisp().innerText.replace(/\./g, '').replace(',', '.') + ')';
+  }
+  updateTRDisplay();
+  trNeu = true;
+}
+
+function trFn(kommando) {
+  let akt = parseFloat(trDisp().innerText.replace(/\./g, '').replace(',', '.'));
+  
+  if (kommando === "AC") {
+    trAusdruck = "";
+    trDisp().innerText = "0";
+    trExpr().innerText = "";
+    trNeu = true;
+  } else if (kommando === "DEL") {
+    let cur = trDisp().innerText;
+    if (cur.length > 1) {
+      trDisp().innerText = cur.slice(0, -1);
+      if(trDisp().innerText === '-') trDisp().innerText = '0';
+    } else {
+      trDisp().innerText = "0";
+    }
+  } else if (kommando === "SQRT") {
+    trAusdruck += "Math.sqrt(";
+    updateTRDisplay();
+    trNeu = true;
+  } else if (kommando === "+/-") {
+    if (trDisp().innerText !== "0") {
+      trDisp().innerText = trDisp().innerText.startsWith("-") ? trDisp().innerText.slice(1) : "-" + trDisp().innerText;
+    }
+  }
+}
+
+function trGleich() {
+  try {
+    let letzterTeil = trDisp().innerText.replace(/\./g, '').replace(',', '.');
+    let kompletterAusdruck = trAusdruck + letzterTeil;
+    
+    if (kompletterAusdruck.trim() === "") return;
+    
+    let offeneKlammern = (kompletterAusdruck.match(/\(/g) || []).length;
+    let geschlosseneKlammern = (kompletterAusdruck.match(/\)/g) || []).length;
+    while (offeneKlammern > geschlosseneKlammern) {
+      kompletterAusdruck += ")";
+      offeneKlammern--;
+    }
+
+    let erg = Function('"use strict"; return (' + kompletterAusdruck + ')')();
+    
+    trAusdruck = kompletterAusdruck;
+    updateTRDisplay();
+    trExpr().innerText += " =";
+    
+    if (!isFinite(erg) || isNaN(erg)) {
+      trDisp().innerText = "Fehler";
+    } else {
+      let gerundet = Math.round(erg * 100000) / 100000;
+      trDisp().innerText = numFormatter.format(gerundet);
+    }
+    
+    trAusdruck = "";
+    trNeu = true;
+  } catch (e) {
+    trDisp().innerText = "Fehler";
+    trAusdruck = "";
+    trNeu = true;
+  }
+}
 </script>
 </body>
 </html>
+
+```
