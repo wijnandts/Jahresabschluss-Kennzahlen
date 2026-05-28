@@ -684,7 +684,7 @@
   <span>🧮</span> Rechner
 </button>
 
-<div id="taschenrechner">
+<<div id="taschenrechner">
   <div id="tr-display">
     <div id="tr-ausdruck"></div>
     <div id="tr-ergebnis">0</div>
@@ -695,32 +695,31 @@
     <button class="tr-btn tr-klammer" onclick="trKlammer('(')">(</button>
     <button class="tr-btn tr-klammer" onclick="trKlammer(')')">)</button>
 
-    <button class="tr-btn tr-op" onclick="trOp('/')">÷</button>
-    <button class="tr-btn tr-op" onclick="trOp('*')">×</button>
-    <button class="tr-btn tr-op" onclick="trOp('-')">−</button>
-    <button class="tr-btn tr-op" onclick="trOp('+')">+</button>
-
     <button class="tr-btn tr-zahl" onclick="trZahl('7')">7</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('8')">8</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('9')">9</button>
-    <button class="tr-btn tr-op"  onclick="trOp('-')">−</button>
+    <button class="tr-btn tr-op" onclick="trOp('/')">÷</button>
 
     <button class="tr-btn tr-zahl" onclick="trZahl('4')">4</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('5')">5</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('6')">6</button>
-    <button class="tr-btn tr-op"  onclick="trOp('+')">+</button>
+    <button class="tr-btn tr-op" onclick="trOp('*')">×</button>
 
     <button class="tr-btn tr-zahl" onclick="trZahl('1')">1</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('2')">2</button>
     <button class="tr-btn tr-zahl" onclick="trZahl('3')">3</button>
-    <button class="tr-btn tr-gleich" onclick="trGleich()">=</button>
+    <button class="tr-btn tr-op" onclick="trOp('-')">−</button>
 
-    <button class="tr-btn tr-zahl tr-null" onclick="trZahl('0')">0</button>
-    <button class="tr-btn tr-zahl" onclick="trZahl('.')">.</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('0')">0</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('.')">,</button>
     <button class="tr-btn tr-fn" onclick="trFn('+/-')">+/−</button>
+    <button class="tr-btn tr-op" onclick="trOp('+')">+</button>
+
     <button class="tr-btn tr-fn" onclick="trFn('%')">%</button>
+    <button class="tr-btn tr-gleich" onclick="trGleich()" style="grid-column: span 3;">=</button>
   </div>
 </div>
+
 
 <script>
 // ── Navigation
