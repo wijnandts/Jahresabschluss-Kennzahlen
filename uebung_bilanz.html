@@ -71,4 +71,863 @@
   .btab th { background: var(--ink); color: #fff; padding: 6px 10px; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; letter-spacing: 0.04em; font-weight: 600; }
   .btab td { padding: 5px 10px; border-bottom: 1px solid var(--border); }
   .btab tr:last-child td { border-bottom: none; }
-  .btab tr:nth-child(even) td { background: #faf
+  .btab tr:nth-child(even) td { background: #faf9f7; }
+  .btab td:last-child { text-align: right; font-weight: 500; }
+  .btab .summe td { border-top: 2px solid var(--border); font-weight: 700; background: #f0ede6; }
+  .btab .gruppe td { font-weight: 700; color: var(--ink-light); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.05em; background: #f0ede6; padding-top: 8px; }
+
+  /* ── Formel */
+  .formel { background: var(--blue-light); border-left: 3px solid var(--blue); border-radius: 4px; padding: 8px 12px; margin: 11px 0; font-size: 0.82rem; font-family: 'DM Mono', monospace; color: var(--blue); }
+
+  /* ── Eingabe */
+  .eingabe-gruppe { display: flex; flex-direction: column; gap: 8px; }
+  .eingabe-zeile { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .eingabe-zeile label { font-size: 0.85rem; font-weight: 500; min-width: 185px; flex-shrink: 0; }
+  .eingabe-zeile input { width: 105px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Mono', monospace; font-size: 0.86rem; background: var(--bg); text-align: right; transition: border-color 0.2s; }
+  .eingabe-zeile input:focus { outline: none; border-color: var(--ink); background: #fff; }
+  .einheit { font-size: 0.78rem; color: var(--ink-light); }
+  .hinweis { background: #f0ede6; border-radius: 6px; padding: 9px 12px; font-size: 0.8rem; color: var(--ink-light); margin-bottom: 12px; }
+  .hinweis strong { color: var(--ink); }
+
+  /* ── Hilfsbox (Aufklapper) */
+  .hilfe { margin: 10px 0 12px; }
+  .hilfe summary {
+    cursor: pointer;
+    font-size: 0.83rem;
+    color: var(--blue);
+    font-weight: 600;
+    padding: 7px 11px;
+    background: var(--blue-light);
+    border-radius: 6px;
+    border: 1px solid #c5d3e8;
+    list-style: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .hilfe summary::-webkit-details-marker { display: none; }
+  .hilfe summary:hover { background: #dde7f3; }
+  .hilfe summary::before { content: "▶"; font-size: 0.7rem; transition: transform 0.2s; }
+  .hilfe[open] summary::before { transform: rotate(90deg); }
+  .hilfe-inhalt {
+    padding: 12px 14px;
+    background: #fafafa;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .hilfe-inhalt p { margin-bottom: 8px; color: var(--ink); }
+  .hilfe-inhalt p:last-child { margin-bottom: 0; }
+  .hilfe-inhalt strong { color: var(--ink); font-weight: 600; }
+  .hilfe-inhalt .schritt { font-family: 'DM Mono', monospace; background: #fff; border: 1px solid var(--border); padding: 6px 10px; border-radius: 4px; margin: 4px 0; font-size: 0.82rem; }
+  .hilfe-inhalt a { color: var(--blue); text-decoration: none; font-weight: 600; }
+  .hilfe-inhalt a:hover { text-decoration: underline; }
+
+  /* ── Buttons */
+  .btns { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .btn { padding: 8px 16px; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.18s; }
+  .btn-p { background: var(--ink); color: #fff; }
+  .btn-p:hover { background: #333; transform: translateY(-1px); }
+  .btn-s { background: transparent; color: var(--ink-light); border: 1.5px solid var(--border); }
+  .btn-s:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-n { background: var(--green); color: #fff; display: none; }
+  .btn-n:hover { background:#145c32; }
+  .btn-calc { background: var(--gold-light); color: var(--gold); border: 1.5px solid #e8d08a; font-size: 0.82rem; }
+  .btn-calc:hover { background: #f5e9b0; }
+
+  /* ── Feedback */
+  .fb { margin-top: 12px; padding: 11px 14px; border-radius: 8px; font-size: 0.87rem; line-height: 1.6; display: none; }
+  .fb.richtig { background: var(--green-light); border: 1px solid #a8d5be; color: var(--green); display: block; }
+  .fb.falsch  { background: var(--accent-light); border: 1px solid #f0b8b2; color: var(--accent); display: block; }
+  .fb.loesung { background: var(--gold-light); border: 1px solid #e8d08a; color: #7a5a08; display: block; }
+
+  /* ── Multiple Choice */
+  .mc { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+  .mc-opt { padding: 9px 13px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.87rem; transition: all 0.18s; background: var(--bg); display: flex; align-items: center; gap: 9px; }
+  .mc-opt:hover { border-color: var(--ink); background: #fff; }
+  .mc-opt.richtig { border-color: var(--green); background: var(--green-light); color: var(--green); pointer-events: none; }
+  .mc-opt.falsch  { border-color: var(--accent); background: var(--accent-light); color: var(--accent); pointer-events: none; }
+  .mc-opt.gesperrt { pointer-events: none; }
+  .mc-bul { width: 20px; height: 20px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+
+  /* ── Textarea */
+  .ta { width: 100%; min-height: 85px; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.87rem; resize: vertical; background: var(--bg); margin-top: 8px; transition: border-color 0.2s; }
+  .ta:focus { outline: none; border-color: var(--ink); background: #fff; }
+
+  /* ── Ergebnistabelle Stufe 3 */
+  .etab { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 12px 0; }
+  .etab th { background: #f0ede6; padding: 6px 10px; text-align: left; font-size: 0.76rem; font-weight: 600; color: var(--ink-light); letter-spacing: 0.04em; }
+  .etab td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .etab tr:last-child td { border-bottom: none; }
+  .etab input { width: 90px; padding: 5px 7px; border: 1.5px solid var(--border); border-radius: 5px; font-family: 'DM Mono', monospace; font-size: 0.84rem; text-align: right; background: var(--bg); }
+  .etab input:focus { outline: none; border-color: var(--ink); background: #fff; }
+  .etab select { padding: 5px 7px; border: 1.5px solid var(--border); border-radius: 5px; font-family: 'DM Sans', sans-serif; font-size: 0.81rem; background: var(--bg); cursor: pointer; }
+
+  /* ── Abschluss */
+  .abschluss { text-align: center; padding: 36px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .abschluss .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--green); line-height: 1; margin-bottom: 8px; }
+  .abschluss p { color: var(--ink-light); font-size: 0.91rem; margin-bottom: 20px; }
+
+  /* ════════════════════════════════════════
+       TASCHENRECHNER STYLES (5 Spalten)
+     ════════════════════════════════════════ */
+  #tr-toggle {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 200;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 11px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: transform 0.2s;
+  }
+  #tr-toggle:hover { transform: scale(1.04); }
+
+  #taschenrechner {
+    position: fixed;
+    bottom: 70px;
+    right: 18px;
+    z-index: 199;
+    background: #1a365d; /* Dunkelblaues Casio-Gehäuse */
+    border-radius: 12px;
+    padding: 15px;
+    width: 280px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    display: none;
+    animation: trEin 0.2s ease;
+    border: 1px solid #2c3e50;
+  }
+  @keyframes trEin { from { opacity:0; transform:translateY(12px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+  #tr-display {
+    background: #a3b899; /* Klassisches LCD-Graugrün */
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 15px;
+    min-height: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 2px solid #555;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+  }
+  #tr-ausdruck {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #222;
+    text-align: left;
+    min-height: 1.2em;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+  #tr-ergebnis {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
+    text-align: right;
+  }
+
+  .tr-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Exakt 5 gleich breite Spalten */
+    gap: 6px;
+  }
+  .tr-btn {
+    padding: 12px 2px;
+    font-size: 0.95em;
+    font-weight: bold;
+    border: 1px solid #222;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.1s;
+    box-shadow: 0 2px 0 #111;
+  }
+  .tr-btn:active { transform: translateY(2px); box-shadow: none; }
+  
+  .tr-zahl   { background: #ffffff; color: #000000; }
+  .tr-op     { background: #ebf5fb; color: #1b4f72; }
+  .tr-fn     { background: #f5b7b1; color: #78281f; }
+  .tr-gleich { background: #5dade2; color: #ffffff; }
+
+  @media (max-width: 600px) {
+    header { padding: 14px 14px; }
+    .tabs { padding: 16px 14px 0; }
+    .tab { padding: 7px 11px; font-size: 0.78rem; }
+    .content { padding: 16px 14px; }
+    .karte { padding: 16px; }
+    .eingabe-zeile label { min-width: 100%; }
+    #taschenrechner { width: calc(100vw - 28px); right: 14px; bottom: 68px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Übersicht</a>
+  <div>
+    <h1>Bilanzkennzahlen</h1>
+    <div class="subtitle">Interaktive Übungen · 3 Schwierigkeitsstufen</div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="wechsleStufe(1)">Stufe 1 <span class="badge">Einstieg</span></div>
+  <div class="tab" onclick="wechsleStufe(2)">Stufe 2 <span class="badge">Analyse</span></div>
+  <div class="tab" onclick="wechsleStufe(3)">Stufe 3 <span class="badge">Profi</span></div>
+</div>
+
+<div class="content">
+
+<div class="level active" id="level-1">
+  <div class="fortschritt-bar"><div class="fortschritt-fill" id="p1"></div></div>
+
+  <div class="karte" id="l1a1">
+    <div class="aufgaben-nr">Aufgabe 1 von 6</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Anlageintensität – Druckerei Wenzel GmbH</h3>
+    <p>Berechne die Anlageintensität anhand der Strukturbilanz.</p>
+    <div class="hinweis"><strong>Strukturbilanz:</strong> Anlagevermögen 360.000 € · Umlaufvermögen 90.000 € · Gesamtvermögen 450.000 €</div>
+    <div class="formel">Anlageintensität = (Anlagevermögen / Gesamtvermögen) · 100</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die Anlageintensität?</strong> Sie gibt an, welcher Anteil des Vermögens langfristig im Unternehmen gebunden ist – z. B. in Gebäuden, Maschinen oder dem Fuhrpark. Eine hohe Anlageintensität bedeutet hohe Fixkosten (Abschreibungen) und weniger Flexibilität bei Umsatzrückgängen.</p>
+        <p><strong>Vorgehen:</strong></p>
+        <div class="schritt">1. Anlagevermögen identifizieren: 360.000 €</div>
+        <div class="schritt">2. Gesamtvermögen identifizieren: 450.000 €</div>
+        <div class="schritt">3. In Formel einsetzen: (360.000 / 450.000) · 100</div>
+        <p>Mehr dazu auf der <a href="erklaerung_bilanz.html#anlageintensitaet">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile">
+        <label>Anlageintensität</label>
+        <input type="number" id="i1a1" placeholder="0,00"><span class="einheit">%</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a1',80,'f1a1','n1a1','360.000 / 450.000 · 100 = <strong>80,00 %</strong> – hohe Anlageintensität. Typisch für produzierende Betriebe mit viel Maschineneinsatz. Hohe Fixkosten durch Abschreibungen machen das Unternehmen bei Umsatzrückgängen unflexibel.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a1','360.000 / 450.000 · 100 = <strong>80,00 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a1" onclick="weiter('l1a1','l1a2','p1',17)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a1"></div>
+  </div>
+
+  <div class="karte" id="l1a2" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 2 von 6</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Umlaufintensität – Großhandel Kastner OHG</h3>
+    <p>Berechne zuerst das Umlaufvermögen aus den Einzelpositionen, dann die Umlaufintensität.</p>
+    <table class="btab">
+      <tr><th>Position</th><th>Betrag (€)</th></tr>
+      <tr><td>Anlagevermögen</td><td>140.000</td></tr>
+      <tr class="gruppe"><td colspan="2">Umlaufvermögen</td></tr>
+      <tr><td>Warenbestand</td><td>95.000</td></tr>
+      <tr><td>Forderungen a. LL.</td><td>42.000</td></tr>
+      <tr><td>Bank + Kasse</td><td>23.000</td></tr>
+      <tr class="summe"><td>Gesamtvermögen</td><td>300.000</td></tr>
+    </table>
+    <div class="formel">Umlaufintensität = (Umlaufvermögen / Gesamtvermögen) · 100</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die Umlaufintensität?</strong> Sie ist das Gegenstück zur Anlageintensität und zeigt, wie viel Prozent des Vermögens kurzfristig umgesetzt werden – also Waren, Forderungen und liquide Mittel. Anlageintensität + Umlaufintensität ergeben immer 100 %.</p>
+        <p><strong>Vorgehen:</strong></p>
+        <div class="schritt">1. Umlaufvermögen aus Einzelpositionen aufsummieren: Waren + Forderungen + Bank/Kasse</div>
+        <div class="schritt">2. Ins Verhältnis zum Gesamtvermögen setzen</div>
+        <div class="schritt">3. Mit 100 multiplizieren für %</div>
+        <p>Mehr dazu auf der <a href="erklaerung_bilanz.html#umlaufintensitaet">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile">
+        <label>Umlaufintensität</label>
+        <input type="number" id="i1a2" placeholder="0,00"><span class="einheit">%</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a2',53.33,'f1a2','n1a2','UV = 95.000 + 42.000 + 23.000 = 160.000 | 160.000 / 300.000 · 100 = <strong>53,33 %</strong> – typisch für den Handel: viel Kapital steckt in Waren und Forderungen.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a2','UV = 160.000 | 160.000 / 300.000 · 100 = <strong>53,33 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a2" onclick="weiter('l1a2','l1a3','p1',33)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a2"></div>
+  </div>
+
+  <div class="karte" id="l1a3" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 3 von 6</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Eigenkapitalquote – Sonnenbäckerei Haller GmbH</h3>
+    <p>Berechne die Eigenkapitalquote anhand der Strukturbilanz.</p>
+    <div class="hinweis"><strong>Strukturbilanz:</strong> Eigenkapital 135.000 € · Fremdkapital 165.000 € · Gesamtkapital 300.000 €</div>
+    <div class="formel">Eigenkapitalquote = (Eigenkapital / Gesamtkapital) · 100</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die Eigenkapitalquote?</strong> Sie sagt aus, welcher Anteil des Gesamtkapitals dem Unternehmen selbst gehört – im Gegensatz zu Fremdkapital (Darlehen, Verbindlichkeiten). Eine hohe EK-Quote schafft Sicherheit und ein besseres Banken-Rating.</p>
+        <p><strong>Richtwert:</strong> Im Bundesdurchschnitt liegt die EK-Quote mittelständischer Unternehmen bei ca. <strong>25 %</strong>.</p>
+        <p><strong>Vorgehen:</strong></p>
+        <div class="schritt">1. Eigenkapital identifizieren: 135.000 €</div>
+        <div class="schritt">2. Gesamtkapital (Bilanzsumme) identifizieren: 300.000 €</div>
+        <div class="schritt">3. EK / Gesamtkapital · 100</div>
+        <p>Mehr dazu auf der <a href="erklaerung_bilanz.html#ek-quote">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile">
+        <label>Eigenkapitalquote</label>
+        <input type="number" id="i1a3" placeholder="0,00"><span class="einheit">%</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a3',45,'f1a3','n1a3','135.000 / 300.000 · 100 = <strong>45,00 %</strong> – solide EK-Quote, liegt weit über dem bundesdeutschen Durchschnitt von ca. 25 % für mittelständische Unternehmen.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a3','135.000 / 300.000 · 100 = <strong>45,00 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a3" onclick="weiter('l1a3','l1a4','p1',50)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a3"></div>
+  </div>
+
+  <div class="karte" id="l1a4" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 4 von 6</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Fremdkapitalquote – Reisebüro Lenz KG</h3>
+    <p>Ermittle zuerst das Fremdkapital aus den Einzelpositionen, dann die FK-Quote.</p>
+    <table class="btab">
+      <tr><th>Position</th><th>Betrag (€)</th></tr>
+      <tr><td>Eigenkapital</td><td>80.000</td></tr>
+      <tr class="gruppe"><td colspan="2">Fremdkapital</td></tr>
+      <tr><td>Darlehensschuld</td><td>120.000</td></tr>
+      <tr><td>Verbindlichkeiten a. LL.</td><td>100.000</td></tr>
+      <tr class="summe"><td>Gesamtkapital</td><td>300.000</td></tr>
+    </table>
+    <div class="formel">Fremdkapitalquote = (Fremdkapital / Gesamtkapital) · 100</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die Fremdkapitalquote?</strong> Sie ist das Gegenstück zur EK-Quote und zeigt, wie stark das Unternehmen von Gläubigern (Banken, Lieferanten) abhängig ist. Fremdkapital muss verzinst und zurückgezahlt werden – das belastet das Unternehmen.</p>
+        <p><strong>Tipp:</strong> EK-Quote + FK-Quote ergeben immer 100 %.</p>
+        <p><strong>Vorgehen:</strong></p>
+        <div class="schritt">1. Fremdkapital aus Einzelpositionen ermitteln: Darlehen + Verbindlichkeiten</div>
+        <div class="schritt">2. FK / Gesamtkapital · 100</div>
+        <p>Mehr dazu auf der <a href="erklaerung_bilanz.html#fk-quote">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile">
+        <label>Fremdkapitalquote</label>
+        <input type="number" id="i1a4" placeholder="0,00"><span class="einheit">%</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a4',73.33,'f1a4','n1a4','FK = 120.000 + 100.000 = 220.000 | 220.000 / 300.000 · 100 = <strong>73,33 %</strong> – das Reisebüro ist stark von Kapitalgebern abhängig. Das Fremdkapital muss verzinst und getilgt werden.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a4','FK = 220.000 | 220.000 / 300.000 · 100 = <strong>73,33 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a4" onclick="weiter('l1a4','l1a5','p1',67)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a4"></div>
+  </div>
+
+  <div class="karte" id="l1a5" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 5 von 6</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Anlagendeckung I – Schreinerei Brandt GmbH</h3>
+    <p>Diese Kennzahl zeigt, wie viel des Anlagevermögens durch Eigenkapital gedeckt ist.</p>
+    <div class="hinweis"><strong>Strukturbilanz:</strong> EK 180.000 € · FK 420.000 € · AV 400.000 € · UV 200.000 € · Gesamtvermögen 600.000 €</div>
+    <div class="formel">Anlagendeckung I = (Eigenkapital / Anlagevermögen) · 100</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt die Anlagendeckung I?</strong> Sie verbindet Aktiv- und Passivseite und zeigt, wie viel Prozent des Anlagevermögens durch Eigenkapital gedeckt ist. Anlagevermögen sollte langfristig finanziert sein – und Eigenkapital ist die langfristigste Finanzierung überhaupt.</p>
+        <p><strong>Achtung:</strong> Der Nenner ist hier nicht das Gesamtvermögen, sondern <strong>nur das Anlagevermögen</strong> – das wird oft verwechselt!</p>
+        <p><strong>Vorgehen:</strong></p>
+        <div class="schritt">1. Eigenkapital identifizieren: 180.000 €</div>
+        <div class="schritt">2. Anlagevermögen identifizieren: 400.000 €</div>
+        <div class="schritt">3. EK / AV · 100</div>
+        <p>Mehr dazu auf der <a href="erklaerung_bilanz.html#anlagendeckung">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile">
+        <label>Anlagendeckung I</label>
+        <input type="number" id="i1a5" placeholder="0,00"><span class="einheit">%</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a5',45,'f1a5','n1a5','180.000 / 400.000 · 100 = <strong>45,00 %</strong> – das EK deckt das AV nur zur Hälfte. Anlagevermögen muss langfristig finanziert sein – am besten durch Eigenkapital oder langfristiges Fremdkapital (Darlehen).')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a5','180.000 / 400.000 · 100 = <strong>45,00 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a5" onclick="weiter('l1a5','l1a6','p1',83)">Weiter →</button>
+    </div>
+    <div class="fb" id="f1a5"></div>
+  </div>
+
+  <div class="karte" id="l1a6" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 6 von 6</div>
+    <span class="typ typ-berechnung">Berechnung</span>
+    <h3>Liquiditätsgrad – Fitnessstudio Körner GmbH</h3>
+    <p>Für den Liquiditätsgrad werden die Werte aus der <em>eigentlichen</em> Bilanz benötigt – nicht die Strukturbilanz.</p>
+    <table class="btab">
+      <tr><th>Position</th><th>Betrag (€)</th></tr>
+      <tr class="gruppe"><td colspan="2">Liquide Mittel</td></tr>
+      <tr><td>Kassenbestand</td><td>4.500</td></tr>
+      <tr><td>Bankguthaben</td><td>21.500</td></tr>
+      <tr class="gruppe"><td colspan="2">Kurzfristiges Fremdkapital</td></tr>
+      <tr><td>Verbindlichkeiten a. LL.</td><td>52.000</td></tr>
+    </table>
+    <div class="formel">Liquiditätsgrad = (Liquide Mittel / kurzfristiges Fremdkapital) · 100</div>
+    <details class="hilfe">
+      <summary>Erklärung & Lösungsweg</summary>
+      <div class="hilfe-inhalt">
+        <p><strong>Was zeigt der Liquiditätsgrad?</strong> Während die anderen Kennzahlen die Vermögens- und Kapitalstruktur betrachten, prüft der Liquiditätsgrad die <strong>Zahlungsfähigkeit</strong>: Reicht das Bargeld plus Bankguthaben aus, um die kurzfristigen Verbindlichkeiten sofort zu bezahlen?</p>
+        <p><strong>Achtung:</strong> Hier reicht die Strukturbilanz <strong>nicht</strong> aus – man braucht die Einzelwerte aus der eigentlichen Bilanz (Kasse, Bank, kurzfristige Verbindlichkeiten).</p>
+        <p><strong>Richtwert:</strong> ca. <strong>20 %</strong>. Das Unternehmen sollte mindestens ein Fünftel seiner kurzfristigen Schulden jederzeit sofort begleichen können.</p>
+        <p><strong>Vorgehen:</strong></p>
+        <div class="schritt">1. Liquide Mittel = Kasse + Bank zusammenrechnen</div>
+        <div class="schritt">2. Kurzfristiges FK identifizieren (Verbindlichkeiten a. LL.)</div>
+        <div class="schritt">3. Liquide Mittel / kurzfr. FK · 100</div>
+        <p>Mehr dazu auf der <a href="erklaerung_bilanz.html#liquiditaet">Erklärungsseite</a>.</p>
+      </div>
+    </details>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile">
+        <label>Liquiditätsgrad</label>
+        <input type="number" id="i1a6" placeholder="0,00"><span class="einheit">%</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeZahl('i1a6',50,'f1a6','n1a6','(4.500 + 21.500) / 52.000 · 100 = 26.000 / 52.000 · 100 = <strong>50,00 %</strong> – über dem Richtwert von ca. 20 %. Das Studio kann seine kurzfristigen Schulden zur Hälfte sofort aus Barmitteln begleichen.')">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f1a6','26.000 / 52.000 · 100 = <strong>50,00 %</strong>')">Lösung</button>
+      <button class="btn btn-n" id="n1a6" onclick="abschluss(1)">Ergebnis →</button>
+    </div>
+    <div class="fb" id="f1a6"></div>
+  </div>
+
+  <div class="abschluss" id="abs1" style="display:none">
+    <div class="score">6 / 6</div>
+    <p>Alle sechs Kennzahlen berechnet – weiter zu Stufe 2!</p>
+    <button class="btn btn-p" onclick="wechsleStufe(2)">Weiter zu Stufe 2 →</button>
+  </div>
+</div>
+
+<div class="level" id="level-2">
+  <div class="fortschritt-bar"><div class="fortschritt-fill" id="p2"></div></div>
+
+  <div class="karte" id="l2a1">
+    <div class="aufgaben-nr">Aufgabe 1 von 3</div>
+    <span class="typ typ-analyse">Berechnung ohne Formelangabe</span>
+    <h3>Alle Kennzahlen berechnen – Autohaus Wagner GmbH</h3>
+    <p>Berechne alle sechs Kennzahlen. Die Formeln sind nicht angegeben.</p>
+    <table class="btab">
+      <tr><th>Aktiva</th><th>Strukturbilanz (€)</th><th>Passiva</th><th>(€)</th></tr>
+      <tr><td>Anlagevermögen</td><td>640.000</td><td>Eigenkapital</td><td>280.000</td></tr>
+      <tr><td>Umlaufvermögen</td><td>360.000</td><td>Fremdkapital</td><td>720.000</td></tr>
+      <tr class="summe"><td>Summe</td><td>1.000.000</td><td>Summe</td><td>1.000.000</td></tr>
+    </table>
+    <p style="margin-bottom:6px">Liquide Mittel 48.000 € · Verbindlichkeiten a. LL. 120.000 €</p>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>Anlageintensität</label><input type="number" id="i2a1-ai" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Umlaufintensität</label><input type="number" id="i2a1-ui" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Eigenkapitalquote</label><input type="number" id="i2a1-ek" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Fremdkapitalquote</label><input type="number" id="i2a1-fk" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Anlagendeckung I</label><input type="number" id="i2a1-ad" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Liquiditätsgrad</label><input type="number" id="i2a1-lq" placeholder="0,00"><span class="einheit">%</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL2A1()">Alle prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f2a1','AI: 64 % · UI: 36 % · EK-Q: 28 % · FK-Q: 72 % · AD I: 43,75 % · Liq.: 40 %')">Lösung</button>
+      <button class="btn btn-n" id="n2a1" onclick="weiter('l2a1','l2a2','p2',33)">Weiter →</button>
+    </div>
+    <div class="fb" id="f2a1"></div>
+  </div>
+
+  <div class="karte" id="l2a2" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 2 von 3</div>
+    <span class="typ typ-vergleich">Zeitreihenvergleich</span>
+    <h3>Zwei Geschäftsjahre beurteilen – Möbelhaus Steinberg GmbH</h3>
+    <p>Berechne für beide Jahre alle sechs Kennzahlen und beurteile die Entwicklung des Unternehmens.</p>
+    <table class="btab">
+      <tr><th>Aktiva</th><th>Akt. Jahr (T€)</th><th>Vorjahr (T€)</th><th>Passiva</th><th>Akt. Jahr (T€)</th><th>Vorjahr (T€)</th></tr>
+      <tr><td>Anlagevermögen</td><td>4.200</td><td>3.600</td><td>Eigenkapital</td><td>1.800</td><td>2.100</td></tr>
+      <tr><td>Umlaufvermögen</td><td>1.800</td><td>2.400</td><td>Fremdkapital</td><td>4.200</td><td>3.900</td></tr>
+      <tr class="summe"><td>Summe</td><td>6.000</td><td>6.000</td><td>Summe</td><td>6.000</td><td>6.000</td></tr>
+    </table>
+    <p style="margin-bottom:6px">Liquide Mittel: akt. Jahr 180 T€ · Vorjahr 360 T€<br>Verbindlichkeiten a. LL.: akt. Jahr 900 T€ · Vorjahr 780 T€</p>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>Anlageintensität – akt. Jahr</label><input type="number" id="i2a2-ai1" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Anlageintensität – Vorjahr</label><input type="number" id="i2a2-ai2" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Eigenkapitalquote – akt. Jahr</label><input type="number" id="i2a2-ek1" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Eigenkapitalquote – Vorjahr</label><input type="number" id="i2a2-ek2" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Anlagendeckung I – akt. Jahr</label><input type="number" id="i2a2-ad1" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Anlagendeckung I – Vorjahr</label><input type="number" id="i2a2-ad2" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Liquiditätsgrad – akt. Jahr</label><input type="number" id="i2a2-lq1" placeholder="0,00"><span class="einheit">%</span></div>
+      <div class="eingabe-zeile"><label>Liquiditätsgrad – Vorjahr</label><input type="number" id="i2a2-lq2" placeholder="0,00"><span class="einheit">%</span></div>
+    </div>
+    <p style="margin-top:12px;margin-bottom:2px">Beurteile die Entwicklung: Was hat sich verschlechtert?</p>
+    <textarea class="ta" id="i2a2-text" placeholder="Deine Beurteilung..."></textarea>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL2A2()">Prüfen</button>
+      <button class="btn btn-s" onclick="loesung('f2a2','Akt./Vorjahr: AI: 70 %/60 % · EK-Q: 30 %/35 % · AD I: 42,86 %/58,33 % · Liq.: 20 %/46,15 %<br>Beurteilung: EK-Quote sinkt, FK-Quote steigt – wachsende Fremdkapitalabhängigkeit. Anlagendeckung I verschlechtert sich deutlich. Liquiditätsgrad halbiert sich und erreicht gerade noch den Richtwert von 20 % – kritisch.')">Lösung</button>
+      <button class="btn btn-n" id="n2a2" onclick="weiter('l2a2','l2a3','p2',66)">Weiter →</button>
+    </div>
+    <div class="fb" id="f2a2"></div>
+  </div>
+
+  <div class="karte" id="l2a3" style="display:none">
+    <div class="aufgaben-nr">Aufgabe 3 von 3</div>
+    <span class="typ typ-analyse">Fehleranalyse</span>
+    <h3>Finde den Rechenfehler</h3>
+    <p>Ein Mitschüler hat folgende Strukturbilanz analysiert und drei Kennzahlen berechnet. Eine ist falsch.</p>
+    <div class="hinweis"><strong>Strukturbilanz:</strong> AV 500.000 € · UV 250.000 € · Gesamtvermögen 750.000 € · EK 300.000 € · FK 450.000 €</div>
+    <table class="btab">
+      <tr><th>Kennzahl</th><th>Rechnung des Mitschülers</th><th>Ergebnis</th></tr>
+      <tr><td>Anlageintensität</td><td>500.000 / 750.000 · 100</td><td>66,67 %</td></tr>
+      <tr><td>Eigenkapitalquote</td><td>300.000 / 750.000 · 100</td><td>40,00 %</td></tr>
+      <tr><td>Anlagendeckung I</td><td>300.000 / 750.000 · 100</td><td>40,00 %</td></tr>
+    </table>
+    <p>Welche Kennzahl ist falsch berechnet und was ist das korrekte Ergebnis?</p>
+    <div class="mc" id="mc-l2a3">
+      <div class="mc-opt" onclick="pruefeL2A3(this,false)"><div class="mc-bul">A</div>Anlageintensität – der Nenner müsste das Anlagevermögen sein.</div>
+      <div class="mc-opt" onclick="pruefeL2A3(this,false)"><div class="mc-bul">B</div>Eigenkapitalquote – der Zähler müsste das Fremdkapital sein.</div>
+      <div class="mc-opt" onclick="pruefeL2A3(this,true)"><div class="mc-bul">C</div>Anlagendeckung I – der Nenner muss das Anlagevermögen (500.000) sein. Korrekt: 300.000 / 500.000 · 100 = 60 %.</div>
+      <div class="mc-opt" onclick="pruefeL2A3(this,false)"><div class="mc-bul">D</div>Alle drei sind korrekt berechnet.</div>
+    </div>
+    <div class="fb" id="f2a3"></div>
+    <div class="btns">
+      <button class="btn btn-n" id="n2a3" onclick="abschluss(2)" style="display:none">Ergebnis →</button>
+    </div>
+  </div>
+
+  <div class="abschluss" id="abs2" style="display:none">
+    <div class="score">✓</div>
+    <p>Stufe 2 abgeschlossen! Du berechnest, vergleichst und erkennst Fehler.</p>
+    <button class="btn btn-p" onclick="wechsleStufe(3)">Weiter zu Stufe 3 →</button>
+  </div>
+</div>
+
+<div class="level" id="level-3">
+  <div class="fortschritt-bar"><div class="fortschritt-fill" id="p3"></div></div>
+
+  <div class="karte" id="l3a1">
+    <div class="aufgaben-nr">Fallstudie</div>
+    <span class="typ typ-fallstudie">Vollständige Analyse & Beurteilung</span>
+    <h3>Mediaworld e. K. – Kreditantrag beurteilen</h3>
+    <p>Die Mediaworld e. K. möchte einen Investitionskredit über 150.000 € aufnehmen. Erstelle zuerst die Strukturbilanz, berechne alle Kennzahlen und empfiehl der Bank, ob der Kredit gewährt werden soll.</p>
+
+    <table class="btab">
+      <tr><th colspan="2">Schlussbilanz Mediaworld e. K. – 31.12.20..</th><th colspan="2"></th></tr>
+      <tr><th>Aktiva</th><th>(€)</th><th>Passiva</th><th>(€)</th></tr>
+      <tr><td>Grundstücke</td><td>170.000</td><td>Eigenkapital</td><td>744.000</td></tr>
+      <tr><td>Gebäude</td><td>387.000</td><td>Darlehensschuld</td><td>318.000</td></tr>
+      <tr><td>Fuhrpark</td><td>35.000</td><td>Verbindlichkeiten a. LL.</td><td>53.000</td></tr>
+      <tr><td>BGA</td><td>92.000</td><td></td><td></td></tr>
+      <tr><td>Warenbestand</td><td>273.000</td><td></td><td></td></tr>
+      <tr><td>Forderungen a. LL.</td><td>88.000</td><td></td><td></td></tr>
+      <tr><td>Bank</td><td>52.000</td><td></td><td></td></tr>
+      <tr><td>Kasse</td><td>18.000</td><td></td><td></td></tr>
+      <tr class="summe"><td>Summe</td><td>1.115.000</td><td>Summe</td><td>1.115.000</td></tr>
+    </table>
+
+    <p><strong>Schritt 1:</strong> Strukturbilanz erstellen</p>
+    <div class="eingabe-gruppe">
+      <div class="eingabe-zeile"><label>Anlagevermögen</label><input type="number" id="s3-av" placeholder="0"><span class="einheit">€</span></div>
+      <div class="eingabe-zeile"><label>Umlaufvermögen</label><input type="number" id="s3-uv" placeholder="0"><span class="einheit">€</span></div>
+      <div class="eingabe-zeile"><label>Eigenkapital</label><input type="number" id="s3-ek" placeholder="0"><span class="einheit">€</span></div>
+      <div class="eingabe-zeile"><label>Fremdkapital</label><input type="number" id="s3-fk" placeholder="0"><span class="einheit">€</span></div>
+    </div>
+
+    <p style="margin-top:16px"><strong>Schritt 2:</strong> Alle sechs Kennzahlen berechnen und beurteilen</p>
+    <table class="etab">
+      <tr><th>Kennzahl</th><th>Ergebnis</th><th>Beurteilung</th></tr>
+      <tr><td>Anlageintensität</td><td><input type="number" id="s3-ai"> %</td><td><select id="s3-ai-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>Umlaufintensität</td><td><input type="number" id="s3-ui"> %</td><td><select id="s3-ui-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>Eigenkapitalquote</td><td><input type="number" id="s3-ekq"> %</td><td><select id="s3-ekq-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>Fremdkapitalquote</td><td><input type="number" id="s3-fkq"> %</td><td><select id="s3-fkq-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>Anlagendeckung I</td><td><input type="number" id="s3-ad"> %</td><td><select id="s3-ad-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+      <tr><td>Liquiditätsgrad</td><td><input type="number" id="s3-lq"> %</td><td><select id="s3-lq-b"><option value="">–</option><option value="g">🟢 gut</option><option value="m">🟡 mittel</option><option value="k">🔴 kritisch</option></select></td></tr>
+    </table>
+
+    <p><strong>Schritt 3:</strong> Kreditempfehlung (mindestens 3 Sätze, konkrete Kennzahlen nennen)</p>
+    <textarea class="ta" id="s3-text" placeholder="Meine Empfehlung an die Bank..."></textarea>
+    <div class="btns">
+      <button class="btn btn-p" onclick="pruefeL3()">Alles prüfen</button>
+      <button class="btn btn-s" id="btn-muster" onclick="loesungL3()" disabled style="opacity:0.35;cursor:not-allowed;" title="Erst eigenes Ergebnis prüfen">Musterlösung</button>
+    </div>
+    <div class="fb" id="f3a1"></div>
+  </div>
+</div>
+
+</div><button id="tr-toggle" onclick="toggleTR()">
+  <span>🧮</span> Rechner
+</button>
+
+<div id="taschenrechner">
+  <div id="tr-display">
+    <div id="tr-ausdruck"></div>
+    <div id="tr-ergebnis">0</div>
+  </div>
+  <div class="tr-grid">
+    <button class="tr-btn tr-zahl" onclick="trZahl('7')">7</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('8')">8</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('9')">9</button>
+    <button class="tr-btn tr-fn" onclick="trFn('DEL')">⌫</button>
+    <button class="tr-btn tr-fn" onclick="trFn('AC')">AC/ON</button>
+
+    <button class="tr-btn tr-zahl" onclick="trZahl('4')">4</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('5')">5</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('6')">6</button>
+    <button class="tr-btn tr-op" onclick="trOp('*')">×</button>
+    <button class="tr-btn tr-op" onclick="trOp('/')">÷</button>
+
+    <button class="tr-btn tr-zahl" onclick="trZahl('1')">1</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('2')">2</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('3')">3</button>
+    <button class="tr-btn tr-op" onclick="trOp('+')">+</button>
+    <button class="tr-btn tr-op" onclick="trOp('-')">−</button>
+
+    <button class="tr-btn tr-zahl" onclick="trZahl('0')">0</button>
+    <button class="tr-btn tr-zahl" onclick="trZahl('.')">,</button>
+    <button class="tr-btn tr-op" onclick="trFn('SQRT')">√</button>
+    <button class="tr-btn tr-op" onclick="trKlammer('(')">(</button>
+    <button class="tr-btn tr-op" onclick="trKlammer(')')">)</button>
+    
+    <div style="grid-column: 1 / span 4;"></div>
+    <button class="tr-btn tr-gleich" onclick="trGleich()">=</button>
+  </div>
+</div>
+
+<script>
+// ── Navigation
+const R = (v,n) => Math.round(v*10**n)/10**n;
+const nah = (a,b,t=0.6) => Math.abs(parseFloat(a)-b) <= t;
+
+function fb(id,typ,html){ const e=document.getElementById(id); e.className='fb '+typ; e.innerHTML=html; }
+function loesung(id,html){ fb(id,'loesung','📖 <strong>Musterlösung:</strong> '+html); }
+
+function weiter(aktId,nextId,progId,pct){
+  document.getElementById(aktId).style.display='none';
+  const n=document.getElementById(nextId); n.style.display='block';
+  n.scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById(progId).style.width=pct+'%';
+}
+function abschluss(stufe){
+  document.querySelectorAll('#level-'+stufe+' .karte').forEach(k=>k.style.display='none');
+  document.getElementById('abs'+stufe).style.display='block';
+  document.getElementById('p'+stufe).style.width='100%';
+}
+function wechsleStufe(nr){
+  document.querySelectorAll('.level').forEach(l=>l.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('level-'+nr).classList.add('active');
+  document.querySelectorAll('.tab')[nr-1].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Stufe 1
+function pruefeZahl(inputId,korrekt,fbId,nextId,erklaerung){
+  const v=parseFloat(document.getElementById(inputId).value);
+  if(isNaN(v)){fb(fbId,'falsch','❌ Bitte einen Wert eingeben.');return;}
+  if(nah(v,korrekt)){
+    fb(fbId,'richtig','✅ <strong>Richtig!</strong> '+erklaerung);
+    document.getElementById(nextId).style.display='inline-block';
+  } else {
+    fb(fbId,'falsch',`❌ Dein Ergebnis: ${v.toFixed(2)} % – überprüfe Zähler und Nenner.`);
+  }
+}
+
+// ── Stufe 2 / A1
+function pruefeL2A1(){
+  const soll={ai:64,ui:36,ek:28,fk:72,ad:43.75,lq:40};
+  const ids={ai:'i2a1-ai',ui:'i2a1-ui',ek:'i2a1-ek',fk:'i2a1-fk',ad:'i2a1-ad',lq:'i2a1-lq'};
+  const namen={ai:'Anlageintensität',ui:'Umlaufintensität',ek:'EK-Quote',fk:'FK-Quote',ad:'Anlagendeckung I',lq:'Liquiditätsgrad'};
+  let richtig=0,fehler=[];
+  for(const k in soll){ if(nah(parseFloat(document.getElementById(ids[k]).value),soll[k])) richtig++; else fehler.push(namen[k]); }
+  if(richtig===6){
+    fb('f2a1','richtig','✅ <strong>Alle sechs Kennzahlen korrekt!</strong> Das Autohaus hat eine kritisch niedrige EK-Quote (28 %) und hohe FK-Abhängigkeit (72 %). Anlagendeckung I nur 43,75 % – strukturell verbesserungswürdig.');
+    document.getElementById('n2a1').style.display='inline-block';
+  } else {
+    fb('f2a1','falsch',`❌ <strong>${richtig}/6 korrekt.</strong> Fehler bei: ${fehler.join(', ')}`);
+  }
+}
+
+// ── Stufe 2 / A2
+function pruefeL2A2(){
+  const soll={ai1:70,ai2:60,ek1:30,ek2:35,ad1:R(1800/4200*100,2),ad2:R(2100/3600*100,2),lq1:R(180/900*100,2),lq2:R(360/780*100,2)};
+  const ids={ai1:'i2a2-ai1',ai2:'i2a2-ai2',ek1:'i2a2-ek1',ek2:'i2a2-ek2',ad1:'i2a2-ad1',ad2:'i2a2-ad2',lq1:'i2a2-lq1',lq2:'i2a2-lq2'};
+  let richtig=0;
+  for(const k in soll){ if(nah(parseFloat(document.getElementById(ids[k]).value),soll[k])) richtig++; }
+  const text=document.getElementById('i2a2-text').value.trim();
+  if(richtig>=6&&text.length>=30){
+    fb('f2a2','richtig',`✅ <strong>${richtig}/8 Werte korrekt.</strong> Kernerkenntnis: EK-Quote sinkt von 35 % auf 30 %, Liquiditätsgrad bricht von 46,15 % auf 20 % ein, Anlagendeckung I verschlechtert sich von 58,33 % auf 42,86 %.`);
+    document.getElementById('n2a2').style.display='inline-block';
+  } else if(text.length<30){
+    fb('f2a2','falsch','❌ Bitte ausführlichere Beurteilung formulieren.');
+  } else {
+    fb('f2a2','falsch',`❌ <strong>${richtig}/8 Werte korrekt.</strong> Überprüfe die fehlerhaften Felder.`);
+  }
+}
+
+// ── Stufe 2 / A3
+function pruefeL2A3(el,richtig){
+  document.querySelectorAll('#mc-l2a3 .mc-opt').forEach(o=>o.classList.add('gesperrt'));
+  if(richtig){
+    el.classList.add('richtig');
+    fb('f2a3','richtig','✅ <strong>Richtig!</strong> Bei der Anlagendeckung I wurde das Gesamtvermögen (750.000) statt des Anlagevermögens (500.000) als Nenner verwendet. Korrekt: 300.000 / 500.000 · 100 = <strong>60 %</strong>.');
+    document.getElementById('n2a3').style.display='inline-block';
+  } else {
+    el.classList.add('falsch');
+    fb('f2a3','falsch','❌ Schau genau: Bei welcher Kennzahl stimmt der Nenner nicht mit der Formel überein?');
+  }
+}
+
+// ── Stufe 3
+const L3={
+  av:684000,uv:431000,bs:1115000,ek:744000,fk:371000,
+  ai:R(684/1115*100,2), ui:R(431/1115*100,2),
+  ekq:R(744/1115*100,2), fkq:R(371/1115*100,2),
+  ad:R(744/684*100,2), lq:R(70/53*100,2)
+};
+
+function pruefeL3(){
+  const avOk=nah(parseFloat(document.getElementById('s3-av').value),L3.av,500);
+  const uvOk=nah(parseFloat(document.getElementById('s3-uv').value),L3.uv,500);
+  const ekOk=nah(parseFloat(document.getElementById('s3-ek').value),L3.ek,500);
+  const fkOk=nah(parseFloat(document.getElementById('s3-fk').value),L3.fk,500);
+  const sb=avOk&&uvOk&&ekOk&&fkOk;
+  const kz=[['s3-ai',L3.ai,'Anlageintensität'],['s3-ui',L3.ui,'Umlaufintensität'],['s3-ekq',L3.ekq,'Eigenkapitalquote'],['s3-fkq',L3.fkq,'Fremdkapitalquote'],['s3-ad',L3.ad,'Anlagendeckung I'],['s3-lq',L3.lq,'Liquiditätsgrad']];
+  let kzR=0,fehler=[];
+  kz.forEach(([id,soll,name])=>{
+    const v=parseFloat(document.getElementById(id).value);
+    if(nah(v,soll)){kzR++;document.getElementById(id).style.borderColor='var(--green)';}
+    else{fehler.push(`${name} (erwartet ${soll} %)`);document.getElementById(id).style.borderColor='var(--accent)';}
+  });
+  const text=document.getElementById('s3-text').value.trim();
+  let msg='';
+  if(!sb) msg+='⚠️ Strukturbilanz prüfen (AV=684.000, UV=431.000, EK=744.000, FK=371.000)<br>';
+  msg+=`<strong>${kzR}/6 Kennzahlen korrekt.</strong>`;
+  if(fehler.length) msg+='<br>Überprüfe: '+fehler.join(', ');
+  if(text.length<60) msg+='<br>⚠️ Kreditempfehlung zu knapp – bitte ausführlicher begründen.';
+  if(sb&&kzR===6&&text.length>=60){
+    fb('f3a1','richtig','✅ <strong>Vollständige und korrekte Analyse!</strong> '+msg);
+    document.getElementById('p3').style.width='100%';
+  } else {
+    fb('f3a1',kzR>=4?'loesung':'falsch',msg);
+    document.getElementById('p3').style.width=(kzR/6*80)+'%';
+  }
+  // Musterlösung freischalten
+  const btn = document.getElementById('btn-muster');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.style.cursor = 'pointer';
+  btn.title = '';
+}
+
+function loesungL3(){
+  fb('f3a1','loesung',`<strong>Musterlösung Mediaworld e. K.</strong><br><br>
+    <strong>Strukturbilanz:</strong> AV 684.000 € · UV 431.000 € · EK 744.000 € · FK 371.000 €<br>
+    Liquide Mittel: Bank 52.000 + Kasse 18.000 = 70.000 € · kurzfr. FK: Verbindl. a. LL. 53.000 €<br><br>
+    <table style="width:100%;font-size:0.83rem;border-collapse:collapse">
+      <tr style="font-weight:700;border-bottom:1px solid #e8d08a"><td>Kennzahl</td><td>Ergebnis</td><td>Beurteilung</td></tr>
+      <tr><td>Anlageintensität</td><td>${L3.ai} %</td><td>🟡 mittel – viel Kapital in Gebäuden gebunden</td></tr>
+      <tr><td>Umlaufintensität</td><td>${L3.ui} %</td><td>🟢 gut – hoher Warenbestand, branchentypisch</td></tr>
+      <tr><td>EK-Quote</td><td>${L3.ekq} %</td><td>🟢 sehr gut – weit über Durchschnitt (25 %)</td></tr>
+      <tr><td>FK-Quote</td><td>${L3.fkq} %</td><td>🟢 gut – geringe Abhängigkeit von Gläubigern</td></tr>
+      <tr><td>Anlagendeckung I</td><td>${L3.ad} %</td><td>🟢 sehr gut – AV vollständig durch EK gedeckt</td></tr>
+      <tr><td>Liquiditätsgrad</td><td>${L3.lq} %</td><td>🟢 gut – deutlich über Richtwert 20 %</td></tr>
+    </table><br>
+    <strong>Kreditempfehlung:</strong> Die Bank sollte den Kredit gewähren. Die Mediaworld e. K. zeigt eine hervorragende EK-Quote von ${L3.ekq} % und eine niedrige FK-Quote von ${L3.fkq} %. Das Anlagevermögen ist vollständig durch Eigenkapital gedeckt (Anlagendeckung I: ${L3.ad} %). Der Liquiditätsgrad von ${L3.lq} % liegt weit über dem Richtwert von 20 %. Das Unternehmen ist finanziell sehr solide und kann den Kredit problemlos bedienen.`);
+}
+
+// ════════════════════════════════════════
+// CASIO-STYLE TASCHENRECHNER LOGIK
+// ════════════════════════════════════════
+let trAusdruck = "";
+const numFormatter = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
+
+function toggleTR(){
+  const tr = document.getElementById('taschenrechner');
+  const offen = tr.style.display === 'block';
+  tr.style.display = offen ? 'none' : 'block';
+  document.getElementById('tr-toggle').innerHTML = offen ? '<span>🧮</span> Rechner' : '<span>✕</span> Schließen';
+}
+
+function updateDisplay() {
+  let visuell = trAusdruck
+    .replace(/\*/g, " × ")
+    .replace(/\//g, " ÷ ")
+    .replace(/\+/g, " + ")
+    .replace(/-/g, " − ")
+    .replace(/Math.sqrt\(/g, "√( ");
+  
+  document.getElementById("tr-ausdruck").innerText = visuell;
+}
+
+function trZahl(z) {
+  trAusdruck += z;
+  updateDisplay();
+}
+
+function trOp(op) {
+  if (["+", "-", "*", "/"].includes(trAusdruck.slice(-1))) {
+    trAusdruck = trAusdruck.slice(0, -1);
+  }
+  trAusdruck += op;
+  updateDisplay();
+}
+
+function trKlammer(kl) {
+  trAusdruck += kl;
+  updateDisplay();
+}
+
+function trFn(kommando) {
+  if (kommando === "AC") {
+    trAusdruck = "";
+    document.getElementById("tr-ergebnis").innerText = "0";
+  } else if (kommando === "DEL") {
+    trAusdruck = trAusdruck.slice(0, -1);
+  } else if (kommando === "SQRT") {
+    trAusdruck += "Math.sqrt(";
+  }
+  updateDisplay();
+}
+
+function trGleich() {
+  try {
+    if (trAusdruck.trim() === "") return;
+    
+    // Automatisch offene Klammern schließen, um Eval-Fehler zu vermeiden
+    let offeneKlammern = (trAusdruck.match(/\(/g) || []).length;
+    let geschlosseneKlammern = (trAusdruck.match(/\)/g) || []).length;
+    while (offeneKlammern > geschlosseneKlammern) {
+      trAusdruck += ")";
+      offeneKlammern--;
+    }
+    
+    let berechnung = eval(trAusdruck);
+    
+    if (!isFinite(berechnung) || isNaN(berechnung)) {
+      document.getElementById("tr-ergebnis").innerText = "Fehler";
+    } else {
+      document.getElementById("tr-ergebnis").innerText = numFormatter.format(berechnung);
+    }
+  } catch (e) {
+    document.getElementById("tr-ergebnis").innerText = "Fehler";
+  }
+}
+</script>
+</body>
+</html>
